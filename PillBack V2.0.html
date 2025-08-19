@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>PillBack Medication Tracker</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background:linear-gradient(135deg, #a8e6cf 0%, #88d8c0 50%, #7fcdcd 100%);
+    min-height:100vh; padding:15px; color:#2c3e50;
+  }
+  .container { 
+    max-width:520px; margin:0 auto; background:#ffffff; 
+    border-radius:24px; overflow:hidden; 
+    box-shadow:0 15px 40px rgba(0,0,0,.08), 0 5px 15px rgba(0,0,0,.05); 
+  }
+  .header { 
+    background:linear-gradient(135deg, #4a90e2 0%, #357abd 50%, #2e86de 100%); 
+    color:#ffffff; padding:24px; text-align:center; 
+  }
+  .header h1 { font-size:26px; margin-bottom:6px; font-weight:600; }
+  .header .date { opacity:.9; font-size:15px; font-weight:400; }
+
+  .toolbar { 
+    display:flex; gap:10px; padding:16px; flex-wrap:wrap; 
+    background:linear-gradient(to bottom, #f8fffe, #f3f9f8); 
+    border-bottom:1px solid #e8f4f2;
+  }
+  .btn { 
+    padding:10px 16px; border:none; border-radius:12px; 
+    font-size:13px; font-weight:500; cursor:pointer; 
+    transition:all .2s ease; 
+  }
+  .btn:hover { transform:translateY(-1px); }
+  .btn:active { transform:translateY(0); }
+  .btn-primary { background:#52c41a; color:#fff; box-shadow:0 2px 8px rgba(82,196,26,.2); }
+  .btn-primary:hover { background:#389e0d; box-shadow:0 4px 12px rgba(82,196,26,.3); }
+  .btn-secondary { background:#1890ff; color:#fff; box-shadow:0 2px 8px rgba(24,144,255,.2); }
+  .btn-secondary:hover { background:#096dd9; box-shadow:0 4px 12px rgba(24,144,255,.3); }
+  .btn-danger { background:#ff7875; color:#fff; box-shadow:0 2px 8px rgba(255,120,117,.2); }
+  .btn-danger:hover { background:#ff4d4f; }
+  .hidden-input { display:none; }
+
+  .stats-grid { 
+    display:grid; grid-template-columns:1fr 1fr; gap:18px; 
+    padding:24px; background:linear-gradient(to bottom, #f0f9f7, #e8f6f3); 
+  }
+  .stat-card { 
+    background:#ffffff; padding:18px; border-radius:16px; text-align:center; 
+    box-shadow:0 4px 16px rgba(0,0,0,.06); border:1px solid #e8f4f2;
+    transition:transform .2s ease;
+  }
+  .stat-card:hover { transform:translateY(-2px); }
+  .stat-card h3 { 
+    font-size:12px; color:#6b7280; margin-bottom:10px; 
+    text-transform:uppercase; letter-spacing:.8px; font-weight:600;
+  }
+  .stat-card .value { font-size:26px; font-weight:700; margin-bottom:6px; }
+  .stat-card .label { font-size:12px; color:#9ca3af; }
+  .adherence { color:#52c41a; } 
+  .next-dose { color:#1890ff; } 
+  .outstanding { color:#13c2c2; } 
+  .current-time { color:#2e86de; transition:all .3s ease; }
+  .current-time.error { color:#ff7875 !important; }
+  .current-time.syncing { opacity:0.7; }
+  .progress-bar { 
+    width:100%; height:8px; background:#e8f4f2; border-radius:4px; 
+    overflow:hidden; margin-top:12px; 
+  }
+  .progress-fill { 
+    height:100%; background:linear-gradient(90deg, #52c41a, #73d13d); 
+    transition:width .4s ease; border-radius:4px;
+  }
+
+  .doses-section { padding:24px; }
+  .section-title { 
+    font-size:20px; font-weight:600; margin-bottom:18px; 
+    color:#1f2937; display:flex; align-items:center; gap:8px;
+  }
+  .section-title::before {
+    content:'💊'; font-size:18px;
+  }
+
+  .dose-grid { display:grid; gap:16px; }
+  .dose-card { 
+    background:#ffffff; border:2px solid #e8f4f2; border-radius:18px; 
+    padding:18px; transition:all .3s ease; position:relative;
+    box-shadow:0 2px 12px rgba(0,0,0,.04);
+  }
+  .dose-card:hover { 
+    transform:translateY(-2px); 
+    box-shadow:0 8px 24px rgba(0,0,0,.08);
+  }
+  .dose-card.taken { 
+    border-color:#52c41a; 
+    background:linear-gradient(135deg, #f6ffed 0%, #e6f7d7 100%); 
+  }
+  .dose-card.pending { 
+    border-color:#13c2c2; 
+    background:linear-gradient(135deg, #e6fffb 0%, #d9f7f0 100%); 
+  }
+  .dose-top { 
+    display:flex; justify-content:space-between; align-items:center; 
+    margin-bottom:10px; 
+  }
+  .dose-time { font-size:30px; font-weight:700; color:#1f2937; }
+  .dose-bay { 
+    font-size:12px; font-weight:600; color:#4a90e2; 
+    background:rgba(74,144,226,.1); padding:6px 12px; 
+    border-radius:20px; border:1px solid rgba(74,144,226,.2);
+  }
+  .dose-meds { 
+    text-align:left; font-size:13px; color:#4b5563; 
+    margin-bottom:12px; font-weight:500;
+  }
+
+  .confirm-row { 
+    display:flex; align-items:center; justify-content:space-between; 
+    gap:12px; 
+  }
+  .confirm-btn { 
+    width:60px; height:60px; border-radius:50%; border:none; 
+    font-size:24px; display:grid; place-items:center; 
+    transition:all .2s ease; cursor:pointer;
+  }
+  .confirm-btn:hover { transform:scale(1.05); }
+  .confirm-btn:active { transform:scale(0.95); }
+  .confirm-btn.pending { 
+    background:linear-gradient(135deg, #13c2c2, #36cfc9); 
+    color:#fff; box-shadow:0 4px 16px rgba(19,194,194,.3);
+  }
+  .confirm-btn.taken { 
+    background:linear-gradient(135deg, #52c41a, #73d13d); 
+    color:#fff; box-shadow:0 4px 16px rgba(82,196,26,.3);
+  }
+  .advice { flex:1; font-size:14px; color:#374151; font-weight:500; }
+  .advice small { 
+    display:block; font-weight:400; color:#6b7280; 
+    opacity:.9; margin-top:2px;
+  }
+
+  .actual-time { margin-top:12px; text-align:left; }
+  .actual-time-display { 
+    font-size:15px; color:#52c41a; font-weight:600; 
+    display:flex; align-items:center; gap:6px;
+  }
+  .actual-time-display::before { content:'✓'; }
+  .variance { font-size:12px; margin-top:6px; font-weight:500; }
+  .variance.excellent { color:#52c41a; } 
+  .variance.good { color:#1890ff; } 
+  .variance.needs-attention { color:#ff7875; }
+
+  .edit-controls { 
+    margin-top:12px; display:flex; gap:8px; align-items:center; 
+    flex-wrap:wrap; 
+  }
+  .edit-time { 
+    padding:8px 12px; border:2px solid #d1d5db; border-radius:10px; 
+    font-size:14px; transition:border-color .2s ease;
+  }
+  .edit-time:focus { 
+    outline:none; border-color:#4a90e2; 
+    box-shadow:0 0 0 3px rgba(74,144,226,.1);
+  }
+
+  .timing-controls { 
+    padding:24px; 
+    background:linear-gradient(to bottom, #f0f9f7, #e8f6f3); 
+    border-top:1px solid #e8f4f2;
+  }
+  .preset-grid { 
+    display:grid; grid-template-columns:1fr 1fr; gap:12px; 
+    margin-top:16px; 
+  }
+  .preset-btn { 
+    padding:16px 12px; border:none; border-radius:14px; 
+    font-size:13px; font-weight:600; color:#fff; cursor:pointer; 
+    transition:all .2s ease; text-align:center;
+  }
+  .preset-btn:hover { transform:translateY(-2px); }
+  .preset-recommended { 
+    background:linear-gradient(135deg, #4a90e2, #357abd); 
+    box-shadow:0 4px 16px rgba(74,144,226,.25);
+  }
+  .preset-early { 
+    background:linear-gradient(135deg, #52c41a, #389e0d); 
+    box-shadow:0 4px 16px rgba(82,196,26,.25);
+  }
+  .preset-late { 
+    background:linear-gradient(135deg, #13c2c2, #08979c); 
+    box-shadow:0 4px 16px rgba(19,194,194,.25);
+  }
+  .preset-extended { 
+    background:linear-gradient(135deg, #1890ff, #096dd9); 
+    box-shadow:0 4px 16px rgba(24,144,255,.25);
+  }
+
+  @media (max-width:400px){
+    body { padding:10px; }
+    .dose-time { font-size:26px; }
+    .confirm-btn { width:54px; height:54px; font-size:22px; }
+    .stats-grid { gap:12px; padding:18px; }
+    .doses-section, .timing-controls { padding:18px; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>PillBack Tracker</h1>
+      <div class="date" id="currentDate"></div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="toolbar">
+      <button class="btn btn-secondary" onclick="resetToday()">Reset Today</button>
+      <button class="btn btn-primary" onclick="exportCSV()">Export CSV</button>
+      <label class="btn btn-secondary" style="cursor:pointer;">
+        Import JSON
+        <input class="hidden-input" type="file" accept="application/json" onchange="importJSON(this.files[0])" />
+      </label>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Current Time</h3>
+        <div class="value current-time" id="currentTime">--:--</div>
+        <div class="label" id="clockStatus">Now</div>
+      </div>
+      <div class="stat-card">
+        <h3>Adherence</h3>
+        <div class="value adherence" id="adherenceRate">0%</div>
+        <div class="label" id="adherenceLabel">0/6 taken</div>
+        <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
+      </div>
+      <div class="stat-card">
+        <h3>Next Dose</h3>
+        <div class="value next-dose" id="nextDose">08:00</div>
+        <div class="label" id="nextDoseLabel">—</div>
+      </div>
+      <div class="stat-card">
+        <h3>Outstanding</h3>
+        <div class="value outstanding" id="outstandingDoses">6</div>
+        <div class="label">Remaining today</div>
+      </div>
+    </div>
+
+    <!-- Schedule -->
+    <div class="doses-section">
+      <div class="section-title">Today's Schedule</div>
+      <div class="dose-grid" id="doseGrid"></div>
+    </div>
+
+    <!-- Presets -->
+    <div class="timing-controls">
+      <div class="section-title">Quick Schedule Presets</div>
+      <div class="preset-grid">
+        <button class="preset-btn preset-recommended" onclick="setPreset('recommended')">Recommended<br><small>2.5hr intervals</small></button>
+        <button class="preset-btn preset-early" onclick="setPreset('early')">Early Bird<br><small>3hr intervals</small></button>
+        <button class="preset-btn preset-late" onclick="setPreset('late')">Late Start<br><small>From 9:00 AM</small></button>
+        <button class="preset-btn preset-extended" onclick="setPreset('extended')">Extended<br><small>4hr intervals</small></button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // ---------- Data ----------
+  let doseTimes = [
+    { time:'08:00', taken:false, actualTime:null, meds:'Morning + 5 meds', bay:1 },
+    { time:'10:30', taken:false, actualTime:null, meds:'Stalevo + Pramipexole', bay:2 },
+    { time:'13:00', taken:false, actualTime:null, meds:'Stalevo + Pramipexole', bay:3 },
+    { time:'15:30', taken:false, actualTime:null, meds:'Stalevo + Pramipexole', bay:4 },
+    { time:'18:00', taken:false, actualTime:null, meds:'Stalevo + Pramipexole', bay:5 },
+    { time:'20:30', taken:false, actualTime:null, meds:'Bedtime + 3 meds', bay:6 }
+  ];
+  let editingIndex = null;
+
+  // ---------- Init & heartbeat ----------
+  function init() {
+    updateClock();
+    updateDisplay();
+    loadFromLocalStorage();
+    normalizeBays();
+    renderDoses();
+    startRobustClock();
+    addEventListeners();
+    detectIOS();
+  }
+
+  let clockInterval=null, backupInterval=null, forceInterval=null, recoveryInterval=null;
+  let lastClockUpdate = Date.now();
+  let isIOS = false;
+  let clockDriftThreshold = 2000; // 2 seconds
+
+  function detectIOS() {
+    isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+            (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (isIOS) {
+      console.log('📱 iOS detected - Enhanced clock recovery enabled');
+      clockDriftThreshold = 1500; // More sensitive on iOS
+    }
+  }
+
+  function startRobustClock() {
+    clearAllIntervals();
+    
+    // Primary clock - 1 second updates
+    clockInterval = setInterval(updateClockWithDriftCheck, 1000);
+    
+    // iOS-optimized backup intervals
+    if (isIOS) {
+      backupInterval = setInterval(()=>{ updateClockWithDriftCheck(); updateDisplay(); }, 5000);
+      forceInterval = setInterval(forceClockRecovery, 15000);
+      recoveryInterval = setInterval(aggressiveClockCheck, 3000);
+    } else {
+      backupInterval = setInterval(()=>{ updateClockWithDriftCheck(); updateDisplay(); }, 10000);
+      forceInterval = setInterval(forceClockRecovery, 30000);
+    }
+  }
+
+  function clearAllIntervals() {
+    if (clockInterval) clearInterval(clockInterval);
+    if (backupInterval) clearInterval(backupInterval);
+    if (forceInterval) clearInterval(forceInterval);
+    if (recoveryInterval) clearInterval(recoveryInterval);
+  }
+
+  function updateClockWithDriftCheck() {
+    const now = Date.now();
+    const timeSinceLastUpdate = now - lastClockUpdate;
+    
+    // Detect if we've drifted significantly (iOS Safari throttling)
+    if (timeSinceLastUpdate > clockDriftThreshold) {
+      console.log(`⏰ Clock drift detected: ${timeSinceLastUpdate}ms - Forcing sync`);
+      forceClockRecovery();
+    }
+    
+    lastClockUpdate = now;
+    return updateClock();
+  }
+
+  function forceClockRecovery() {
+    console.log('🔄 Force clock recovery initiated');
+    updateClockStatus('Syncing...');
+    updateClock();
+    updateDisplay();
+    
+    // Restart main interval if it stopped
+    if (!clockInterval) {
+      clockInterval = setInterval(updateClockWithDriftCheck, 1000);
+    }
+    
+    lastClockUpdate = Date.now();
+    
+    // Reset status after recovery
+    setTimeout(() => updateClockStatus('Now'), 2000);
+  }
+
+  function updateClockStatus(status) {
+    const statusEl = document.getElementById('clockStatus');
+    if (statusEl) {
+      statusEl.textContent = status;
+      if (status !== 'Now') {
+        statusEl.style.color = '#1890ff';
+      } else {
+        statusEl.style.color = '';
+      }
+    }
+  }
+
+  function aggressiveClockCheck() {
+    // iOS-specific aggressive checking
+    const now = Date.now();
+    const drift = now - lastClockUpdate;
+    
+    if (drift > 5000) { // 5 second drift
+      console.log('🚨 Major clock drift detected - Full recovery');
+      updateClockStatus('Recovering...');
+      startRobustClock();
+      updateDisplay();
+      setTimeout(() => updateClockStatus('Now'), 3000);
+    }
+  }
+
+  function addEventListeners() {
+    // Enhanced visibility handling for iOS
+    document.addEventListener('visibilitychange', ()=>{
+      if(document.visibilityState === 'visible'){
+        console.log('👁️ Page visible - Syncing clock');
+        setTimeout(()=> {
+          updateClockWithDriftCheck();
+          startRobustClock();
+          updateDisplay();
+        }, 100);
+      } else {
+        console.log('👁️ Page hidden - Clock will be throttled');
+      }
+    });
+
+    // Multiple focus recovery events
+    window.addEventListener('focus', ()=>{
+      console.log('🎯 Window focus - Clock recovery');
+      setTimeout(forceClockRecovery, 50);
+    });
+    
+    window.addEventListener('pageshow', (event)=>{
+      console.log('📄 Page show - Clock recovery');
+      if (event.persisted) {
+        // Page was restored from cache
+        setTimeout(()=> {
+          startRobustClock();
+          updateDisplay();
+        }, 100);
+      } else {
+        setTimeout(forceClockRecovery, 50);
+      }
+    });
+
+    // iOS Safari specific events
+    window.addEventListener('orientationchange', ()=> {
+      setTimeout(()=>{ 
+        console.log('🔄 Orientation change - Clock sync');
+        updateClockWithDriftCheck(); 
+        updateDisplay(); 
+      }, 200);
+    });
+
+    window.addEventListener('online', ()=>{
+      console.log('🌐 Online - Clock recovery');
+      startRobustClock();
+    });
+
+    // Enhanced touch-based recovery for iOS
+    document.addEventListener('touchstart', ()=> {
+      updateClockWithDriftCheck();
+    }, { passive: true });
+    
+    document.addEventListener('touchend', ()=> {
+      updateClockWithDriftCheck();
+    }, { passive: true });
+    
+    document.addEventListener('click', updateClockWithDriftCheck);
+
+    // iOS scroll events can indicate activity
+    if (isIOS) {
+      document.addEventListener('scroll', updateClockWithDriftCheck, { passive: true });
+    }
+
+    // Heartbeat with enhanced logging
+    setInterval(()=> {
+      const drift = Date.now() - lastClockUpdate;
+      if (drift > 10000) {
+        console.log(`💔 Heartbeat: Clock drift ${Math.round(drift/1000)}s`);
+        forceClockRecovery();
+      }
+    }, 15000);
+  }
+
+  // ---------- Clock & dashboard ----------
+  function updateClock() {
+    try {
+      const now = new Date();
+      const timeString = now.toTimeString().slice(0,5);
+      const dateString = now.toLocaleDateString('en-US',{ weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+      const timeEl = document.getElementById('currentTime');
+      if (timeEl && timeEl.textContent !== timeString) {
+        timeEl.textContent = timeString;
+        
+        // Visual feedback for successful clock update
+        timeEl.style.opacity = '0.7';
+        setTimeout(() => { timeEl.style.opacity = '1'; }, 100);
+      }
+
+      const dateEl = document.getElementById('currentDate');
+      if (dateEl && dateEl.textContent !== dateString) dateEl.textContent = dateString;
+
+      updateNextDose();
+      return true;
+    } catch (e) {
+      console.error('❌ Clock update failed:', e);
+      // Show error state in UI
+      const timeEl = document.getElementById('currentTime');
+      if (timeEl) {
+        timeEl.style.color = '#ff7875';
+        setTimeout(() => { timeEl.style.color = ''; }, 2000);
+      }
+      setTimeout(updateClock, 5000);
+      return false;
+    }
+  }
+
+  function updateNextDose() {
+    try {
+      const now = new Date();
+      const currentMinutes = now.getHours()*60 + now.getMinutes();
+
+      let next = null;
+      for (const dose of doseTimes) {
+        const [h,m] = dose.time.split(':').map(Number);
+        const mins = h*60 + m;
+        if (!dose.taken && mins >= currentMinutes) { next = dose; break; }
+      }
+      if (!next) next = doseTimes.find(d=>!d.taken) || null;
+
+      const nextDoseEl = document.getElementById('nextDose');
+      const nextDoseLabelEl = document.getElementById('nextDoseLabel');
+
+      if (next) {
+        nextDoseEl.textContent = next.time;
+        nextDoseLabelEl.textContent = `Take from Bay ${next.bay} — ${next.meds}`;
+      } else {
+        nextDoseEl.textContent = 'All done!';
+        nextDoseLabelEl.textContent = 'No remaining doses';
+      }
+    } catch (e) { /* noop */ }
+  }
+
+  function updateDisplay() {
+    try {
+      const total = doseTimes.length;
+      const taken = doseTimes.filter(d=>d.taken).length;
+      const rate = Math.round((taken/total)*100);
+      const outstanding = total - taken;
+
+      document.getElementById('adherenceRate').textContent = `${rate}%`;
+      document.getElementById('adherenceLabel').textContent = `${taken}/${total} taken`;
+      document.getElementById('progressBar').style.width = `${rate}%`;
+      document.getElementById('outstandingDoses').textContent = outstanding;
+
+      updateNextDose();
+      saveToLocalStorage();
+    } catch(e) { /* noop */ }
+  }
+
+  // ---------- Render ----------
+  function renderDoses() {
+    const container = document.getElementById('doseGrid');
+    container.innerHTML = '';
+
+    doseTimes.forEach((dose, index) => {
+      const variance = dose.actualTime ? calculateVariance(dose.time, dose.actualTime) : null;
+
+      const card = document.createElement('div');
+      card.className = `dose-card ${dose.taken ? 'taken' : 'pending'}`;
+      card.innerHTML = `
+        <div class="dose-top">
+          <div class="dose-time">${dose.time}</div>
+          <div class="dose-bay">Bay ${dose.bay}</div>
+        </div>
+        <div class="dose-meds">${dose.meds}</div>
+
+        <div class="confirm-row">
+          <button class="confirm-btn ${dose.taken ? 'taken' : 'pending'}" aria-label="Mark dose ${dose.taken ? 'not taken' : 'taken'}" onclick="toggleDose(${index})">
+            ${dose.taken ? '✓' : '○'}
+          </button>
+          <div class="advice">
+            Take from <strong>Bay ${dose.bay}</strong>
+            <small>${dose.taken ? 'Logged' : 'Tap to confirm when taken'}</small>
+          </div>
+        </div>
+
+        ${dose.taken ? `
+          <div class="actual-time">
+            <div class="actual-time-display">Taken at ${dose.actualTime || 'Unknown'}</div>
+            ${variance !== null ? `<div class="variance ${getVarianceClass(Math.abs(variance))}">${variance>0?'+':''}${variance} minutes (${getVarianceLabel(Math.abs(variance))})</div>`:``}
+            <div class="edit-controls">
+              ${editingIndex === index ? `
+                <input type="time" class="edit-time" value="${dose.actualTime || ''}" onchange="updateActualTime(${index}, this.value)" />
+                <button class="btn btn-primary" onclick="saveEdit()">Save</button>
+              ` : `
+                <button class="btn btn-primary" onclick="editTime(${index})">Edit Time</button>
+              `}
+              <button class="btn btn-danger" onclick="resetDose(${index})">Reset</button>
+            </div>
+          </div>
+        ` : ``}
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // ---------- Actions ----------
+  function toggleDose(index) {
+    const dose = doseTimes[index];
+    dose.taken = !dose.taken;
+    if (dose.taken && !dose.actualTime) {
+      const now = new Date();
+      dose.actualTime = now.toTimeString().slice(0,5);
+      if (navigator.vibrate) navigator.vibrate(12);
+    }
+    if (!dose.taken) dose.actualTime = null;
+    updateDisplay(); renderDoses(); updateClock();
+  }
+
+  function calculateVariance(scheduledTime, actualTime) {
+    const [sh, sm] = scheduledTime.split(':').map(Number);
+    const [ah, am] = actualTime.split(':').map(Number);
+    return (ah*60+am) - (sh*60+sm);
+  }
+  function getVarianceClass(absVar){ if(absVar<=15) return 'excellent'; if(absVar<=30) return 'good'; return 'needs-attention'; }
+  function getVarianceLabel(absVar){ if(absVar<=15) return 'Excellent'; if(absVar<=30) return 'Good'; return 'Needs attention'; }
+
+  function editTime(index){ editingIndex = index; renderDoses(); }
+  function updateActualTime(index,newTime){ doseTimes[index].actualTime = newTime; updateDisplay(); }
+  function saveEdit(){ editingIndex = null; renderDoses(); }
+  function resetDose(index){ doseTimes[index].taken=false; doseTimes[index].actualTime=null; updateDisplay(); renderDoses(); }
+  function resetToday(){
+    doseTimes.forEach(d=>{ d.taken=false; d.actualTime=null; });
+    updateDisplay(); renderDoses();
+  }
+
+  // ---------- Presets ----------
+  function setPreset(type){
+    if (type==='recommended'){
+      doseTimes = [
+        { time:'08:00', taken:false, actualTime:null, meds:'Morning + 5 meds' },
+        { time:'10:30', taken:false, actualTime:null, meds:'Stalevo + Pramipexole' },
+        { time:'13:00', taken:false, actualTime:null, meds:'Stalevo + Pramipexole' },
+        { time:'15:30', taken:false, actualTime:null, meds:'Stalevo + Pramipexole' },
+        { time:'18:00', taken:false, actualTime:null, meds:'Stalevo + Pramipexole' },
+        { time:'20:30', taken:false, actualTime:null, meds:'Bedtime + 3 meds' }
+      ];
+    } else if (type==='early'){
+      doseTimes = [
+        { time:'07:00', taken:false, actualTime:null, meds:'Morning + 5 meds' },
+        { time:'10:00', taken:false, actualTime:null, meds:'Stalevo + Pramipexole' },
+        { time:'13:00', taken:false, actualTime:null, meds:'Stalevo + Pramipexole' },
+        { time:'16:00', taken:false, actualTime:null, meds:'Stalevo + Pramipexole' },
+        { time:'19:00', taken:false, actualTime:null, meds:'Stalevo + Pramipexole' },
+        { time:'22:00', taken:false, actualTime:null, meds:'Bedtime + 3 meds' }
+      ];
+    } else if (type==='late'){
+      doseTimes = [
+        { time:'09:00', taken:false, actualTime:null, meds:'Morning + 5 meds' },
+        { time:'11:30', taken:false, actualTime:null, meds:'Stalevo + Pramipexole' },
+        { time:'14:00', taken:false, actualTime:null, meds:'Stalevo + Pramipexole' },
+        { time:'16:30', taken:false, actualTime:null, meds:'Stalevo + Pramipexole' },
+        { time:'19:00', taken:false, actualTime:null, meds:'Stalevo + Pramipexole' },
+        { time:'21:30', taken:false, actualTime:null, meds:'Bedtime + 3 meds' }
+      ];
+    } else if (type==='extended'){
+      doseTimes = [
+        { time:'08:00', taken:false, actualTime:null, meds:'Morning + 5 meds' },
+        { time:'12:00', taken:false, actualTime:null, meds:'Stalevo + Pramipexole' },
+        { time:'16:00', taken:false, actualTime:null, meds:'Stalevo + Pramipexole' },
+        { time:'20:00', taken:false, actualTime:null, meds:'Bedtime + 3 meds' }
+      ];
+    }
+    normalizeBays();
+    updateDisplay();
+    renderDoses();
+  }
+
+  function normalizeBays(){
+    // Assign bay numbers 1..N every time schedule changes
+    doseTimes.forEach((d,i)=>{ d.bay = (i+1); });
+  }
+
+  // ---------- Persistence ----------
+  function saveToLocalStorage(){ localStorage.setItem('pillback-doses', JSON.stringify(doseTimes)); }
+  function loadFromLocalStorage(){
+    const saved = localStorage.getItem('pillback-doses');
+    if (!saved) return;
+    try { doseTimes = JSON.parse(saved); } catch(e){ /* ignore */ }
+  }
+
+  // ---------- Import / Export ----------
+  function exportCSV(){
+    const today = new Date().toISOString().slice(0,10);
+    const rows = [
+      ['date','scheduled_time','actual_time','variance_min','bay','meds','taken']
+    ];
+    for (const d of doseTimes){
+      const variance = d.actualTime ? calculateVariance(d.time, d.actualTime) : '';
+      rows.push([today, d.time, d.actualTime||'', variance, d.bay, d.meds, d.taken ? '1':'0']);
+    }
+    const csv = rows.map(r=>r.map(s=>String(s).replace(/"/g,'""')).map(s=>`"${s}"`).join(',')).join('\n');
+    const blob = new Blob([csv], {type:'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href=url; a.download=`pillback_${today}.csv`; document.body.appendChild(a); a.click();
+    URL.revokeObjectURL(url); a.remove();
+  }
+
+  async function importJSON(file){
+    if (!file) return;
+    const text = await file.text();
+    try {
+      const data = JSON.parse(text);
+      if (!Array.isArray(data)) throw new Error('Invalid JSON');
+      doseTimes = data.map((d,i)=>({
+        time:d.time, taken:!!d.taken, actualTime:d.actualTime||null, meds:d.meds||'', bay:d.bay || (i+1)
+      }));
+      normalizeBays();
+      updateDisplay(); renderDoses();
+    } catch(e){
+      alert('Import failed: ' + e.message);
+    }
+  }
+
+  // ---------- Debug ----------
+  function checkClock(){
+    // Enhanced lightweight clock monitoring
+    const now = Date.now();
+    const drift = now - lastClockUpdate;
+    
+    if (drift > 5000) {
+      console.log(`⚠️ Clock check: ${Math.round(drift/1000)}s drift detected`);
+      updateClockWithDriftCheck();
+    } else {
+      updateClock(); // Normal update
+    }
+  }
+
+  // Boot
+  document.addEventListener('DOMContentLoaded', init);
+  window.addEventListener('load', ()=> setTimeout(init, 100)); // safety net
+  setTimeout(()=>{ const t = document.getElementById('currentTime'); if (t && t.textContent==='--:--') init(); }, 2000);
+</script>
+</body>
+</html>
