@@ -7,12 +7,23 @@ import UserNotifications
 /// Screen for requesting notification permissions during onboarding
 struct NotificationPermissionView: View {
     @EnvironmentObject var viewModel: PillBackViewModel
+    @Environment(\.metrics) var metrics
     let onContinue: () -> Void
+    let onBack: (() -> Void)?
 
     @State private var isRequesting = false
 
+    init(onContinue: @escaping () -> Void, onBack: (() -> Void)? = nil) {
+        self.onContinue = onContinue
+        self.onBack = onBack
+    }
+
     var body: some View {
         VStack(spacing: 40) {
+            // Progress (step 2 of 6 after Welcome)
+            OnboardingProgressView(currentStep: 2, totalSteps: 6)
+                .padding(.top, 20)
+
             Spacer()
 
             // Illustration
@@ -45,7 +56,7 @@ struct NotificationPermissionView: View {
 
             Spacer()
 
-            // Buttons
+            // Enable Notifications button
             VStack(spacing: 12) {
                 Button(action: requestPermission) {
                     HStack {
@@ -58,7 +69,7 @@ struct NotificationPermissionView: View {
                         }
                     }
                     .font(.system(size: 18, weight: .bold))
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(
@@ -75,7 +86,54 @@ struct NotificationPermissionView: View {
                 }
             }
             .padding(.horizontal, 24)
-            .padding(.bottom, 20)
+
+            // Navigation buttons
+            HStack(spacing: 16) {
+                // Back button
+                if let onBack = onBack {
+                    Button(action: {
+                        HapticManager.selectionChanged()
+                        onBack()
+                    }) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 14, weight: .semibold))
+                            Text("Back")
+                                .font(.system(size: 16, weight: .medium))
+                        }
+                        .foregroundColor(viewModel.currentTheme.colors.textSecondary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 18)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(viewModel.currentTheme.colors.bgElevated)
+                        )
+                    }
+                    .frame(width: 120)
+                }
+
+                // Continue button
+                Button(action: {
+                    HapticManager.selectionChanged()
+                    onContinue()
+                }) {
+                    HStack(spacing: 6) {
+                        Text("Continue")
+                            .font(.system(size: 16, weight: .semibold))
+                        Image(systemName: "arrow.right")
+                            .font(.system(size: 14, weight: .semibold))
+                    }
+                    .foregroundColor(.black)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 18)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(viewModel.currentTheme.colors.accent)
+                    )
+                }
+            }
+            .padding(.horizontal, metrics.horizontalPadding)
+            .padding(.bottom, 50)
         }
     }
 
@@ -131,6 +189,10 @@ struct NotificationPreview: View {
 }
 
 #Preview {
-    NotificationPermissionView(onContinue: {})
-        .environmentObject(PillBackViewModel())
+    NotificationPermissionView(
+        onContinue: { print("Continue") },
+        onBack: { print("Back") }
+    )
+    .environmentObject(PillBackViewModel())
+    .environment(\.metrics, ResponsiveMetrics())
 }

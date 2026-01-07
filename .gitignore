@@ -94,3 +94,5 @@ Secrets/
 
 Makefile
 sync-exclude-list.txt
+
+.claude/

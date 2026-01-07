@@ -3,39 +3,74 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0002428663D7C2E40D2A1603 /* KeyMedicationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F0744062C5DFE10B4747F0 /* KeyMedicationView.swift */; };
+		0E697411C9528FFBDE838FAF /* PillBackLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDBAD1F5C6BA1E91840891F /* PillBackLogo.swift */; };
 		0FBF494744417A6BB575DFDE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CCDA629A095B012B57923C5 /* Assets.xcassets */; };
 		1432CE67064EADAA17A1FE9E /* EditDoseSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC18DCAFD86AA389870E796 /* EditDoseSheet.swift */; };
 		17715435723786AF74D2CE6C /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC84D2AC7642F0B663F76A2 /* ScheduleView.swift */; };
 		214F178B42DB5410C63072EE /* ViewMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2462662511B207A7D85D38B /* ViewMode.swift */; };
 		23FA347B14B288D7C29DDF9C /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B12B188439E602F1FE2905 /* HeaderView.swift */; };
+		28BCB1E491993C903BA388B4 /* DoseHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B1353F1764087D2C90A265 /* DoseHistory.swift */; };
 		352A0BB36A45B86F750473BD /* AdherenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2B3E43C47DA82AB9DE2D4E /* AdherenceView.swift */; };
 		3628CED5986DEF9B3CCEEC18 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFF9F24677A2903FC5BFE66 /* ContentView.swift */; };
+		3634E3C0E2FEB9D2E5A8F376 /* AudioFeedbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BDBA64F76B468DD8C0B16B1 /* AudioFeedbackService.swift */; };
+		3A6DBD9D427B8AC75BE3084B /* CompanionMedicationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0971AAE7359C70D2382E1ECE /* CompanionMedicationsView.swift */; };
+		4169D09EBFF511969FE868D9 /* MinimalMedication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272450FB80881E6C024B6244 /* MinimalMedication.swift */; };
 		41EC67E7134CC7CA8704B092 /* PillBackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB9C2EB520FA057F5BFFE40 /* PillBackApp.swift */; };
 		4576100DE368F0FEDF606481 /* Dose.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BBE7911A2A77A4B524378A /* Dose.swift */; };
+		49FDB595EADB40017ADE1502 /* NotificationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3696D805E2BE37C68DC0502A /* NotificationServiceTests.swift */; };
 		4D03CADB97A3533500BEACA6 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470CEBEF64D3122FD3674903 /* AppTheme.swift */; };
+		4EDA7652AA424CDB8D45EE54 /* StreakBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E27BE24704B128BEB13C51 /* StreakBadge.swift */; };
+		5120E8CFCD32A52322144AC4 /* PortSettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECD33436D1CAF35D5807EAE /* PortSettingsSheet.swift */; };
+		5231CF5A178DAD42A963204D /* ExportServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5411167F863555A9C76D5BF /* ExportServiceTests.swift */; };
+		52C61251ACE910FD83E10B81 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AB61DCDFB0BB668BF83256 /* HistoryView.swift */; };
+		530D640BC4E7FAF44A7E49B7 /* PillBackScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D246987414EFFD8A6F610728 /* PillBackScheduler.swift */; };
 		55428462E647EA8044F9D082 /* DoseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FE9AA9CDE477252F791A29 /* DoseTests.swift */; };
+		5D95F89D32B28099F1ECEB5A /* MotionDetectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6FD6E7E6F253FAFD5F98A6C /* MotionDetectionService.swift */; };
+		5D9CE8B08B5494DFAE1F599F /* WakingHoursView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6697671C03BD930802C0CE7D /* WakingHoursView.swift */; };
+		66759969496D6333C30F4F1A /* AdherenceRecordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF197AF103C178FEF0104AC /* AdherenceRecordTests.swift */; };
 		6B995A8F825B5207DF2D592C /* OnboardingContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EF00738DDBD9332E920CC8 /* OnboardingContainerView.swift */; };
 		6D349AEB1887E3D9EB4E57DE /* TimelineOnlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA028F6F743EA7A21DF8FF7 /* TimelineOnlyView.swift */; };
 		6E3A083DCE641E2B9F535275 /* ScheduleConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683A0604A8A877272831C1B6 /* ScheduleConfig.swift */; };
 		7DA35AB410600E935547B20F /* MedicationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9F279406224370B54577F9 /* MedicationsView.swift */; };
+		803099C0AEAA28A257F2BB99 /* StreakTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803DF4EA12DE1E947EF78059 /* StreakTracker.swift */; };
 		84B1816502E23075ED39780B /* NameEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71937DC120FE9E32FA272F6C /* NameEntryView.swift */; };
 		8782A6D22E1A9A20978EDACB /* NotificationPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9524256FA6D69C1FC53F34 /* NotificationPermissionView.swift */; };
+		883AAEAE439FA2BE53DA67D1 /* DataMigrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEE77E1DDE757F4FA19DEEB /* DataMigrationService.swift */; };
+		9306C345258745804ADFB3ED /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = B922924A2ABE8E2CAF4C20E9 /* Typography.swift */; };
+		93D651A61E6F68C821CB7DF0 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354EC04B25D864C972EDBA76 /* EmptyStateView.swift */; };
+		93D93F3EE53E2FEE6CCBD9E7 /* DoseHistoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2FC729405CD64CE1323DB9 /* DoseHistoryTests.swift */; };
+		96D0D7A759404900B874ED85 /* AdherenceRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AFBEA06782820CA67498D /* AdherenceRecord.swift */; };
+		9B03BC14384E3E47EC647125 /* MedicationInputSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888D80A5C31239DB58D665D0 /* MedicationInputSheet.swift */; };
 		9CBA22FB15FF5509DB0B3E5D /* PillBackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34564B416AB6EE273D84C28 /* PillBackViewModel.swift */; };
+		9D545C13DFA758BEA3441EAC /* HistoryServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF8D905F089E309F736F713 /* HistoryServiceTests.swift */; };
+		A0EBBA581E07A47DF9445B4F /* PortsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDF21AAAC331AA9DF20817F /* PortsView.swift */; };
 		A17604A1997B7012F0BDB987 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D260CF5F1B631F934FCDE7 /* SettingsView.swift */; };
 		A7A019D7BB4751384DB5AA0D /* MedicationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92E4D7C52BD06191CC54F4B /* MedicationTests.swift */; };
+		A82FEC2507D26C4AE205E8BC /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711019EE283BDBCEC886B86E /* NotificationService.swift */; };
+		AA39CBC1E3560ABFC68827F7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D2298770D20330EF5B1406 /* HomeView.swift */; };
 		B085313D64894BFBCD845AF3 /* ThemeSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABF3E8D20202E7AA7D636B5 /* ThemeSelectorView.swift */; };
 		B3A59C9F7EF1ABF5800AFB1A /* AddMedicationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D38342B31855CFB99B4E2A /* AddMedicationSheet.swift */; };
 		C0E9F10D9BC354CE12F47DCC /* DoseCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F4CB1D182C9268EBEE3EAD /* DoseCardView.swift */; };
+		C66ABE86BA9B64CF6F3D7215 /* EasyModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3CF5B979701BFD0F373A11 /* EasyModeView.swift */; };
+		C7C78959F29EEABBD3E39DB8 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EBCA0DC921438F18CC2C47 /* HapticManager.swift */; };
+		C97E1641AFF0F1DE836A3791 /* HistoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E05C17DFB7EAF975F98C4C /* HistoryService.swift */; };
+		C9E512299A21C03CFA265A74 /* OnboardingProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDE7CDB4DBBA1992F6F899A /* OnboardingProgressView.swift */; };
+		CA43521145EE61488F7CC414 /* PillBackSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8E4179837E2BEAB64DCCFB /* PillBackSchedulerTests.swift */; };
+		CA6CAABEC8FEFE121CBED6B7 /* StreakTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E3D3A53906E7A3196F69ED /* StreakTrackerTests.swift */; };
+		CBB5B25156741B4CA67B2C10 /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7F5595C268BB784C353B2D /* ExportService.swift */; };
 		CD8CE98846368286B55E7E88 /* TimelineSidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3D67F36A3BDDCCBFAB03A /* TimelineSidebarView.swift */; };
+		D152331C84CD3C6312BFA945 /* ResponsiveMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E9A3800697A4C82CC74A3 /* ResponsiveMetrics.swift */; };
 		D9757FCFB41B5977B6195433 /* ScheduleSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987AD628F7B1459AD64620B6 /* ScheduleSetupView.swift */; };
 		DC04526BA594A101F66EF55D /* ScheduleConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EA111F9A637C429565F02F6 /* ScheduleConfigTests.swift */; };
 		DDA872CBDD13B4A106B7F4C3 /* PillBackViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3EEB2EFAA7F0011E05195F /* PillBackViewModelTests.swift */; };
 		E1DE7E512C19B6FB942E1E14 /* TimingBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2F6589FFD7136CFE00E87E /* TimingBadge.swift */; };
 		E2F054FB5543C3CADE898799 /* ViewModeToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1291BF49ACFE5F2948BABB /* ViewModeToggleButton.swift */; };
+		E5DFCDC50C2D06B55C7B215D /* OCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54E378F7CB88394D7C70E146 /* OCRService.swift */; };
 		E659E96C469B56A842FF5F07 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3B08FEA2B8318968E73DBC /* Color+Hex.swift */; };
 		EF0AF327DCC218E735561FDA /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0010E3F4185ADF402024AE37 /* WelcomeView.swift */; };
 		F27D2F503692CFC4410B245F /* Medication.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD62AB97240710935DA2E6FB /* Medication.swift */; };
@@ -53,47 +88,103 @@
 
 /* Begin PBXFileReference section */
 		0010E3F4185ADF402024AE37 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		0971AAE7359C70D2382E1ECE /* CompanionMedicationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionMedicationsView.swift; sourceTree = "<group>"; };
 		0CCDA629A095B012B57923C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		135E9A3800697A4C82CC74A3 /* ResponsiveMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsiveMetrics.swift; sourceTree = "<group>"; };
 		17B12B188439E602F1FE2905 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		1C8E4179837E2BEAB64DCCFB /* PillBackSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillBackSchedulerTests.swift; sourceTree = "<group>"; };
+		23E3D3A53906E7A3196F69ED /* StreakTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakTrackerTests.swift; sourceTree = "<group>"; };
+		25D2298770D20330EF5B1406 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		272450FB80881E6C024B6244 /* MinimalMedication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinimalMedication.swift; sourceTree = "<group>"; };
+		2C3CF5B979701BFD0F373A11 /* EasyModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyModeView.swift; sourceTree = "<group>"; };
 		2D2B3E43C47DA82AB9DE2D4E /* AdherenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdherenceView.swift; sourceTree = "<group>"; };
+		31E05C17DFB7EAF975F98C4C /* HistoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryService.swift; sourceTree = "<group>"; };
 		32D38342B31855CFB99B4E2A /* AddMedicationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMedicationSheet.swift; sourceTree = "<group>"; };
+		354EC04B25D864C972EDBA76 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
+		3696D805E2BE37C68DC0502A /* NotificationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationServiceTests.swift; sourceTree = "<group>"; };
+		3EDBAD1F5C6BA1E91840891F /* PillBackLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillBackLogo.swift; sourceTree = "<group>"; };
 		470CEBEF64D3122FD3674903 /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
+		47E27BE24704B128BEB13C51 /* StreakBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakBadge.swift; sourceTree = "<group>"; };
+		4CF197AF103C178FEF0104AC /* AdherenceRecordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdherenceRecordTests.swift; sourceTree = "<group>"; };
+		4DF8D905F089E309F736F713 /* HistoryServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryServiceTests.swift; sourceTree = "<group>"; };
+		4ECD33436D1CAF35D5807EAE /* PortSettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortSettingsSheet.swift; sourceTree = "<group>"; };
+		4F2FC729405CD64CE1323DB9 /* DoseHistoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseHistoryTests.swift; sourceTree = "<group>"; };
+		54E378F7CB88394D7C70E146 /* OCRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRService.swift; sourceTree = "<group>"; };
 		57FE9AA9CDE477252F791A29 /* DoseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseTests.swift; sourceTree = "<group>"; };
 		5FC18DCAFD86AA389870E796 /* EditDoseSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDoseSheet.swift; sourceTree = "<group>"; };
+		6697671C03BD930802C0CE7D /* WakingHoursView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WakingHoursView.swift; sourceTree = "<group>"; };
 		683A0604A8A877272831C1B6 /* ScheduleConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleConfig.swift; sourceTree = "<group>"; };
+		711019EE283BDBCEC886B86E /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		71937DC120FE9E32FA272F6C /* NameEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameEntryView.swift; sourceTree = "<group>"; };
 		7B3EEB2EFAA7F0011E05195F /* PillBackViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillBackViewModelTests.swift; sourceTree = "<group>"; };
 		7CFF9F24677A2903FC5BFE66 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		803DF4EA12DE1E947EF78059 /* StreakTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakTracker.swift; sourceTree = "<group>"; };
+		888D80A5C31239DB58D665D0 /* MedicationInputSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicationInputSheet.swift; sourceTree = "<group>"; };
 		88F4CB1D182C9268EBEE3EAD /* DoseCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseCardView.swift; sourceTree = "<group>"; };
+		8BDE7CDB4DBBA1992F6F899A /* OnboardingProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProgressView.swift; sourceTree = "<group>"; };
 		8D3309D330A1B8F572B6B5A5 /* PillBack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PillBack.entitlements; sourceTree = "<group>"; };
 		8EA111F9A637C429565F02F6 /* ScheduleConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleConfigTests.swift; sourceTree = "<group>"; };
 		8F1291BF49ACFE5F2948BABB /* ViewModeToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModeToggleButton.swift; sourceTree = "<group>"; };
 		987AD628F7B1459AD64620B6 /* ScheduleSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleSetupView.swift; sourceTree = "<group>"; };
+		9BDBA64F76B468DD8C0B16B1 /* AudioFeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFeedbackService.swift; sourceTree = "<group>"; };
 		9E2F6589FFD7136CFE00E87E /* TimingBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingBadge.swift; sourceTree = "<group>"; };
 		9EA028F6F743EA7A21DF8FF7 /* TimelineOnlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineOnlyView.swift; sourceTree = "<group>"; };
 		AFC84D2AC7642F0B663F76A2 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
 		B5D260CF5F1B631F934FCDE7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B922924A2ABE8E2CAF4C20E9 /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
 		BD62AB97240710935DA2E6FB /* Medication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Medication.swift; sourceTree = "<group>"; };
 		BD9F279406224370B54577F9 /* MedicationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicationsView.swift; sourceTree = "<group>"; };
+		C0EBCA0DC921438F18CC2C47 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		C2B1353F1764087D2C90A265 /* DoseHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoseHistory.swift; sourceTree = "<group>"; };
+		C5411167F863555A9C76D5BF /* ExportServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportServiceTests.swift; sourceTree = "<group>"; };
+		CB7F5595C268BB784C353B2D /* ExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportService.swift; sourceTree = "<group>"; };
+		CBEE77E1DDE757F4FA19DEEB /* DataMigrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigrationService.swift; sourceTree = "<group>"; };
 		CC3B08FEA2B8318968E73DBC /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
 		CD703C62AF43298045CC4D49 /* PillBackTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PillBackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE9524256FA6D69C1FC53F34 /* NotificationPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionView.swift; sourceTree = "<group>"; };
-		D154185AC02DB60B8224C77C /* PillBack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PillBack.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D154185AC02DB60B8224C77C /* PillBack.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = PillBack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2462662511B207A7D85D38B /* ViewMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMode.swift; sourceTree = "<group>"; };
+		D246987414EFFD8A6F610728 /* PillBackScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillBackScheduler.swift; sourceTree = "<group>"; };
+		D5AB61DCDFB0BB668BF83256 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		D8BBE7911A2A77A4B524378A /* Dose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dose.swift; sourceTree = "<group>"; };
 		D9F3D67F36A3BDDCCBFAB03A /* TimelineSidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSidebarView.swift; sourceTree = "<group>"; };
 		E34564B416AB6EE273D84C28 /* PillBackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillBackViewModel.swift; sourceTree = "<group>"; };
+		E56AFBEA06782820CA67498D /* AdherenceRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdherenceRecord.swift; sourceTree = "<group>"; };
 		EAB9C2EB520FA057F5BFFE40 /* PillBackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillBackApp.swift; sourceTree = "<group>"; };
 		F0B2C0293D973BC81C36CD00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		F4F0744062C5DFE10B4747F0 /* KeyMedicationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyMedicationView.swift; sourceTree = "<group>"; };
 		F6EF00738DDBD9332E920CC8 /* OnboardingContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContainerView.swift; sourceTree = "<group>"; };
+		F6FD6E7E6F253FAFD5F98A6C /* MotionDetectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionDetectionService.swift; sourceTree = "<group>"; };
 		F92E4D7C52BD06191CC54F4B /* MedicationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicationTests.swift; sourceTree = "<group>"; };
 		FABF3E8D20202E7AA7D636B5 /* ThemeSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSelectorView.swift; sourceTree = "<group>"; };
+		FFDF21AAAC331AA9DF20817F /* PortsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		0205EFE324CD2FC5BFF9C1D9 /* EasyMode */ = {
+			isa = PBXGroup;
+			children = (
+				2C3CF5B979701BFD0F373A11 /* EasyModeView.swift */,
+			);
+			path = EasyMode;
+			sourceTree = "<group>";
+		};
+		11D649AA38017A71A92311A1 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				D5AB61DCDFB0BB668BF83256 /* HistoryView.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
 		1A10F273C3BBBF6DE34DA984 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				C5411167F863555A9C76D5BF /* ExportServiceTests.swift */,
+				4DF8D905F089E309F736F713 /* HistoryServiceTests.swift */,
+				3696D805E2BE37C68DC0502A /* NotificationServiceTests.swift */,
+				1C8E4179837E2BEAB64DCCFB /* PillBackSchedulerTests.swift */,
+				23E3D3A53906E7A3196F69ED /* StreakTrackerTests.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -120,14 +211,34 @@
 		379FE5E0FB347EC0EE802ABC /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				9BDBA64F76B468DD8C0B16B1 /* AudioFeedbackService.swift */,
+				CBEE77E1DDE757F4FA19DEEB /* DataMigrationService.swift */,
+				CB7F5595C268BB784C353B2D /* ExportService.swift */,
+				C0EBCA0DC921438F18CC2C47 /* HapticManager.swift */,
+				31E05C17DFB7EAF975F98C4C /* HistoryService.swift */,
+				F6FD6E7E6F253FAFD5F98A6C /* MotionDetectionService.swift */,
+				711019EE283BDBCEC886B86E /* NotificationService.swift */,
+				54E378F7CB88394D7C70E146 /* OCRService.swift */,
+				D246987414EFFD8A6F610728 /* PillBackScheduler.swift */,
+				803DF4EA12DE1E947EF78059 /* StreakTracker.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		39911075CA5F09483D06AA1F /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				25D2298770D20330EF5B1406 /* HomeView.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 		42C15C5E5E5F5DA8A8811B4B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				CC3B08FEA2B8318968E73DBC /* Color+Hex.swift */,
+				135E9A3800697A4C82CC74A3 /* ResponsiveMetrics.swift */,
+				B922924A2ABE8E2CAF4C20E9 /* Typography.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -153,7 +264,11 @@
 		5942680FC77E698E914EF534 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				354EC04B25D864C972EDBA76 /* EmptyStateView.swift */,
 				17B12B188439E602F1FE2905 /* HeaderView.swift */,
+				8BDE7CDB4DBBA1992F6F899A /* OnboardingProgressView.swift */,
+				3EDBAD1F5C6BA1E91840891F /* PillBackLogo.swift */,
+				47E27BE24704B128BEB13C51 /* StreakBadge.swift */,
 				FABF3E8D20202E7AA7D636B5 /* ThemeSelectorView.swift */,
 				9E2F6589FFD7136CFE00E87E /* TimingBadge.swift */,
 				8F1291BF49ACFE5F2948BABB /* ViewModeToggleButton.swift */,
@@ -202,6 +317,15 @@
 			path = PillBack;
 			sourceTree = "<group>";
 		};
+		D9BAE679F573B13E0D8830B7 /* Ports */ = {
+			isa = PBXGroup;
+			children = (
+				4ECD33436D1CAF35D5807EAE /* PortSettingsSheet.swift */,
+				FFDF21AAAC331AA9DF20817F /* PortsView.swift */,
+			);
+			path = Ports;
+			sourceTree = "<group>";
+		};
 		E45968EEAD78900F56B310FE /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -242,8 +366,12 @@
 			children = (
 				F0D4AECCA03BFFF6918CC461 /* Adherence */,
 				5942680FC77E698E914EF534 /* Components */,
+				0205EFE324CD2FC5BFF9C1D9 /* EasyMode */,
+				11D649AA38017A71A92311A1 /* History */,
+				39911075CA5F09483D06AA1F /* Home */,
 				E5110DBFBCE4FB1AA6201286 /* Medications */,
 				F7A3E4637F9A1BB9D435FAEB /* Onboarding */,
+				D9BAE679F573B13E0D8830B7 /* Ports */,
 				2F3DE56298C623CB4FDAB500 /* Schedule */,
 				C0CE35038B200CDB7E15E0B1 /* Settings */,
 				4C2350E157EADE009DA539B3 /* Timeline */,
@@ -254,9 +382,12 @@
 		F5C0430CB6E6A746CAB830A6 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E56AFBEA06782820CA67498D /* AdherenceRecord.swift */,
 				470CEBEF64D3122FD3674903 /* AppTheme.swift */,
 				D8BBE7911A2A77A4B524378A /* Dose.swift */,
+				C2B1353F1764087D2C90A265 /* DoseHistory.swift */,
 				BD62AB97240710935DA2E6FB /* Medication.swift */,
+				272450FB80881E6C024B6244 /* MinimalMedication.swift */,
 				683A0604A8A877272831C1B6 /* ScheduleConfig.swift */,
 				D2462662511B207A7D85D38B /* ViewMode.swift */,
 			);
@@ -266,10 +397,14 @@
 		F7A3E4637F9A1BB9D435FAEB /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				0971AAE7359C70D2382E1ECE /* CompanionMedicationsView.swift */,
+				F4F0744062C5DFE10B4747F0 /* KeyMedicationView.swift */,
+				888D80A5C31239DB58D665D0 /* MedicationInputSheet.swift */,
 				71937DC120FE9E32FA272F6C /* NameEntryView.swift */,
 				CE9524256FA6D69C1FC53F34 /* NotificationPermissionView.swift */,
 				F6EF00738DDBD9332E920CC8 /* OnboardingContainerView.swift */,
 				987AD628F7B1459AD64620B6 /* ScheduleSetupView.swift */,
+				6697671C03BD930802C0CE7D /* WakingHoursView.swift */,
 				0010E3F4185ADF402024AE37 /* WelcomeView.swift */,
 			);
 			path = Onboarding;
@@ -278,6 +413,8 @@
 		F7C1B87DBE6D27256429CB35 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				4CF197AF103C178FEF0104AC /* AdherenceRecordTests.swift */,
+				4F2FC729405CD64CE1323DB9 /* DoseHistoryTests.swift */,
 				57FE9AA9CDE477252F791A29 /* DoseTests.swift */,
 				F92E4D7C52BD06191CC54F4B /* MedicationTests.swift */,
 				8EA111F9A637C429565F02F6 /* ScheduleConfigTests.swift */,
@@ -331,9 +468,10 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 2620;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					3D9B04FE7D1102BB083453BC = {
+						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 					F34AD9901B44D545A5CC9717 = {
@@ -352,6 +490,7 @@
 			);
 			mainGroup = 36778C7CCD925AF10E6AA39E;
 			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -378,31 +517,59 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3A59C9F7EF1ABF5800AFB1A /* AddMedicationSheet.swift in Sources */,
+				96D0D7A759404900B874ED85 /* AdherenceRecord.swift in Sources */,
 				352A0BB36A45B86F750473BD /* AdherenceView.swift in Sources */,
 				4D03CADB97A3533500BEACA6 /* AppTheme.swift in Sources */,
+				3634E3C0E2FEB9D2E5A8F376 /* AudioFeedbackService.swift in Sources */,
 				E659E96C469B56A842FF5F07 /* Color+Hex.swift in Sources */,
+				3A6DBD9D427B8AC75BE3084B /* CompanionMedicationsView.swift in Sources */,
 				3628CED5986DEF9B3CCEEC18 /* ContentView.swift in Sources */,
+				883AAEAE439FA2BE53DA67D1 /* DataMigrationService.swift in Sources */,
 				4576100DE368F0FEDF606481 /* Dose.swift in Sources */,
 				C0E9F10D9BC354CE12F47DCC /* DoseCardView.swift in Sources */,
+				28BCB1E491993C903BA388B4 /* DoseHistory.swift in Sources */,
+				C66ABE86BA9B64CF6F3D7215 /* EasyModeView.swift in Sources */,
 				1432CE67064EADAA17A1FE9E /* EditDoseSheet.swift in Sources */,
+				93D651A61E6F68C821CB7DF0 /* EmptyStateView.swift in Sources */,
+				CBB5B25156741B4CA67B2C10 /* ExportService.swift in Sources */,
+				C7C78959F29EEABBD3E39DB8 /* HapticManager.swift in Sources */,
 				23FA347B14B288D7C29DDF9C /* HeaderView.swift in Sources */,
+				C97E1641AFF0F1DE836A3791 /* HistoryService.swift in Sources */,
+				52C61251ACE910FD83E10B81 /* HistoryView.swift in Sources */,
+				AA39CBC1E3560ABFC68827F7 /* HomeView.swift in Sources */,
+				0002428663D7C2E40D2A1603 /* KeyMedicationView.swift in Sources */,
 				F27D2F503692CFC4410B245F /* Medication.swift in Sources */,
+				9B03BC14384E3E47EC647125 /* MedicationInputSheet.swift in Sources */,
 				7DA35AB410600E935547B20F /* MedicationsView.swift in Sources */,
+				4169D09EBFF511969FE868D9 /* MinimalMedication.swift in Sources */,
+				5D95F89D32B28099F1ECEB5A /* MotionDetectionService.swift in Sources */,
 				84B1816502E23075ED39780B /* NameEntryView.swift in Sources */,
 				8782A6D22E1A9A20978EDACB /* NotificationPermissionView.swift in Sources */,
+				A82FEC2507D26C4AE205E8BC /* NotificationService.swift in Sources */,
+				E5DFCDC50C2D06B55C7B215D /* OCRService.swift in Sources */,
 				6B995A8F825B5207DF2D592C /* OnboardingContainerView.swift in Sources */,
+				C9E512299A21C03CFA265A74 /* OnboardingProgressView.swift in Sources */,
 				41EC67E7134CC7CA8704B092 /* PillBackApp.swift in Sources */,
+				0E697411C9528FFBDE838FAF /* PillBackLogo.swift in Sources */,
+				530D640BC4E7FAF44A7E49B7 /* PillBackScheduler.swift in Sources */,
 				9CBA22FB15FF5509DB0B3E5D /* PillBackViewModel.swift in Sources */,
+				5120E8CFCD32A52322144AC4 /* PortSettingsSheet.swift in Sources */,
+				A0EBBA581E07A47DF9445B4F /* PortsView.swift in Sources */,
+				D152331C84CD3C6312BFA945 /* ResponsiveMetrics.swift in Sources */,
 				6E3A083DCE641E2B9F535275 /* ScheduleConfig.swift in Sources */,
 				D9757FCFB41B5977B6195433 /* ScheduleSetupView.swift in Sources */,
 				17715435723786AF74D2CE6C /* ScheduleView.swift in Sources */,
 				A17604A1997B7012F0BDB987 /* SettingsView.swift in Sources */,
+				4EDA7652AA424CDB8D45EE54 /* StreakBadge.swift in Sources */,
+				803099C0AEAA28A257F2BB99 /* StreakTracker.swift in Sources */,
 				B085313D64894BFBCD845AF3 /* ThemeSelectorView.swift in Sources */,
 				6D349AEB1887E3D9EB4E57DE /* TimelineOnlyView.swift in Sources */,
 				CD8CE98846368286B55E7E88 /* TimelineSidebarView.swift in Sources */,
 				E1DE7E512C19B6FB942E1E14 /* TimingBadge.swift in Sources */,
+				9306C345258745804ADFB3ED /* Typography.swift in Sources */,
 				214F178B42DB5410C63072EE /* ViewMode.swift in Sources */,
 				E2F054FB5543C3CADE898799 /* ViewModeToggleButton.swift in Sources */,
+				5D9CE8B08B5494DFAE1F599F /* WakingHoursView.swift in Sources */,
 				EF0AF327DCC218E735561FDA /* WelcomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -411,10 +578,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66759969496D6333C30F4F1A /* AdherenceRecordTests.swift in Sources */,
+				93D93F3EE53E2FEE6CCBD9E7 /* DoseHistoryTests.swift in Sources */,
 				55428462E647EA8044F9D082 /* DoseTests.swift in Sources */,
+				5231CF5A178DAD42A963204D /* ExportServiceTests.swift in Sources */,
+				9D545C13DFA758BEA3441EAC /* HistoryServiceTests.swift in Sources */,
 				A7A019D7BB4751384DB5AA0D /* MedicationTests.swift in Sources */,
+				49FDB595EADB40017ADE1502 /* NotificationServiceTests.swift in Sources */,
+				CA43521145EE61488F7CC414 /* PillBackSchedulerTests.swift in Sources */,
 				DDA872CBDD13B4A106B7F4C3 /* PillBackViewModelTests.swift in Sources */,
 				DC04526BA594A101F66EF55D /* ScheduleConfigTests.swift in Sources */,
+				CA6CAABEC8FEFE121CBED6B7 /* StreakTrackerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,7 +679,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = PillBack/Resources/PillBack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = Y6Y84X2B9A;
 				INFOPLIST_FILE = PillBack/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -530,7 +703,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = PillBack/Resources/PillBack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = Y6Y84X2B9A;
 				INFOPLIST_FILE = PillBack/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -616,6 +788,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -632,6 +805,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

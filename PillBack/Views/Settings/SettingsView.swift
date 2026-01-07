@@ -1,70 +1,103 @@
 // SettingsView.swift
-// Settings tab for configuring schedule and preferences
+// Settings tab for configuring app preferences - v0.4 Design
 
 import SwiftUI
 
-/// Settings view for app configuration
+/// Settings view for app configuration - v0.4 Design
 struct SettingsView: View {
     @EnvironmentObject var viewModel: PillBackViewModel
+    @Environment(\.metrics) var metrics
     @State private var showingResetConfirmation = false
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 20) {
-                // Personal Section
-                SettingsSection(title: "Personal") {
-                    SettingsNameRow()
-                }
+            VStack(spacing: 24) {
+                // Title
+                Text("Settings")
+                    .font(.system(size: metrics.titleSize, weight: .bold))
+                    .foregroundColor(viewModel.currentTheme.colors.textPrimary)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.top, 8)
 
-                // Schedule Section
-                SettingsSection(title: "Schedule") {
-                    ScheduleSettingsView()
-                }
+                // Notifications Section
+                NotificationsSettingsSection()
 
-                // Appearance Section
-                SettingsSection(title: "Appearance") {
-                    ThemeSettingsRow()
-                }
-
-                // Data Section
-                SettingsSection(title: "Data") {
-                    // Export button (stub for Phase 3)
-                    SettingsButton(
-                        icon: "square.and.arrow.up",
-                        title: "Export Data",
-                        subtitle: "Coming soon",
-                        action: {}
-                    )
-                    .disabled(true)
-                    .opacity(0.5)
+                // Display Section
+                SettingsSectionV4(title: "DISPLAY") {
+                    // Theme row
+                    ThemePickerRow()
 
                     Divider()
                         .background(viewModel.currentTheme.colors.border)
 
-                    // Reset button
+                    // 24-hour time toggle
+                    ToggleRowWithAction(
+                        icon: "clock",
+                        title: "24-hour time",
+                        isOn: viewModel.use24HourFormat,
+                        onChange: { viewModel.set24HourFormat($0) }
+                    )
+                }
+
+                // Accessibility Section
+                SettingsSectionV4(title: "ACCESSIBILITY") {
+                    // Easy Mode toggle
+                    ToggleRowWithAction(
+                        icon: "hand.tap",
+                        title: "Easy Mode",
+                        isOn: viewModel.easyModeEnabled,
+                        onChange: { viewModel.setEasyMode($0) }
+                    )
+
+                    Divider()
+                        .background(viewModel.currentTheme.colors.border)
+
+                    // Haptic Feedback toggle
+                    ToggleRowWithAction(
+                        icon: "waveform",
+                        title: "Haptic Feedback",
+                        isOn: viewModel.hapticFeedbackEnabled,
+                        onChange: { viewModel.setHapticFeedback($0) }
+                    )
+
+                    Divider()
+                        .background(viewModel.currentTheme.colors.border)
+
+                    // Confirmation Sound
+                    SoundPickerRow()
+                }
+
+                // Version Section
+                SettingsSectionV4(title: nil) {
+                    HStack {
+                        Text("Version")
+                            .font(.system(size: 16))
+                            .foregroundColor(viewModel.currentTheme.colors.textPrimary)
+                        Spacer()
+                        Text("0.4")
+                            .font(.system(size: 16))
+                            .foregroundColor(viewModel.currentTheme.colors.textMuted)
+                    }
+
+                    Divider()
+                        .background(viewModel.currentTheme.colors.border)
+
                     Button(action: { showingResetConfirmation = true }) {
-                        HStack {
-                            Image(systemName: "trash")
-                                .font(.system(size: 16))
-                                .foregroundColor(viewModel.currentTheme.colors.danger)
-                                .frame(width: 28)
-
-                            Text("Reset All Data")
-                                .font(.system(size: 15, weight: .medium))
-                                .foregroundColor(viewModel.currentTheme.colors.danger)
-
-                            Spacer()
-                        }
-                        .padding(.vertical, 8)
+                        Text("Reset App")
+                            .font(.system(size: 16))
+                            .foregroundColor(viewModel.currentTheme.colors.danger)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
 
-                // About Section
-                SettingsSection(title: "About") {
-                    AboutView()
-                }
+                // Footer
+                Text("© 2025 Eurekaport Inc.")
+                    .font(.system(size: 12))
+                    .foregroundColor(viewModel.currentTheme.colors.textMuted)
+                    .padding(.top, 8)
+                    .padding(.bottom, 40)
             }
-            .padding()
+            .padding(.horizontal, metrics.horizontalPadding)
         }
         .background(viewModel.currentTheme.colors.bgPrimary)
         .confirmationDialog(
@@ -77,27 +110,93 @@ struct SettingsView: View {
             }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("This will delete all doses, reset medications to defaults, and clear your preferences. This action cannot be undone.")
+            Text("This will clear all medications, port schedule, and preferences. This action cannot be undone.")
         }
     }
 }
 
-/// Reusable settings section container
-struct SettingsSection<Content: View>: View {
+// MARK: - Notifications Settings Section
+
+private struct NotificationsSettingsSection: View {
     @EnvironmentObject var viewModel: PillBackViewModel
-    let title: String
+
+    var body: some View {
+        VStack(spacing: 12) {
+            // Notification options with checkmarks
+            VStack(alignment: .leading, spacing: 8) {
+                NotificationOptionRow(icon: "clock", text: "1 min before each dose")
+                NotificationOptionRow(icon: "bell", text: "At scheduled time")
+                NotificationOptionRow(icon: "arrow.clockwise", text: "Follow-up after 5 min")
+            }
+            .padding(.horizontal, 16)
+
+            // Update Notifications button
+            Button(action: {
+                HapticManager.impact(.medium)
+                // TODO: Request notification permissions
+            }) {
+                HStack(spacing: 8) {
+                    Image(systemName: "bell.fill")
+                        .font(.system(size: 14))
+                    Text("Update Notifications")
+                        .font(.system(size: 14, weight: .medium))
+                }
+                .foregroundColor(viewModel.currentTheme.colors.accent)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 10)
+                .background(
+                    Capsule()
+                        .stroke(viewModel.currentTheme.colors.accent, lineWidth: 1)
+                )
+            }
+
+            // Status text
+            Text("18 notifications scheduled")
+                .font(.system(size: 12))
+                .foregroundColor(viewModel.currentTheme.colors.textMuted)
+        }
+        .padding(.vertical, 16)
+    }
+}
+
+private struct NotificationOptionRow: View {
+    @EnvironmentObject var viewModel: PillBackViewModel
+    let icon: String
+    let text: String
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .font(.system(size: 14))
+                .foregroundColor(viewModel.currentTheme.colors.textMuted)
+                .frame(width: 20)
+
+            Text(text)
+                .font(.system(size: 14))
+                .foregroundColor(viewModel.currentTheme.colors.textSecondary)
+        }
+    }
+}
+
+// MARK: - Section Container
+
+private struct SettingsSectionV4<Content: View>: View {
+    @EnvironmentObject var viewModel: PillBackViewModel
+    let title: String?
     @ViewBuilder let content: () -> Content
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(title.uppercased())
-                .font(.system(size: 12, weight: .bold))
-                .foregroundColor(viewModel.currentTheme.colors.textMuted)
+            if let title = title {
+                Text(title)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(viewModel.currentTheme.colors.textMuted)
+            }
 
-            VStack(spacing: 0) {
+            VStack(spacing: 12) {
                 content()
             }
-            .padding()
+            .padding(16)
             .background(
                 RoundedRectangle(cornerRadius: 12)
                     .fill(viewModel.currentTheme.colors.bgCard)
@@ -106,315 +205,150 @@ struct SettingsSection<Content: View>: View {
     }
 }
 
-/// Name editing row
-struct SettingsNameRow: View {
+// MARK: - Theme Picker Row
+
+private struct ThemePickerRow: View {
     @EnvironmentObject var viewModel: PillBackViewModel
-    @State private var name: String = ""
-    @FocusState private var isFocused: Bool
 
     var body: some View {
         HStack {
-            Image(systemName: "person.fill")
+            Text("Theme")
                 .font(.system(size: 16))
-                .foregroundColor(viewModel.currentTheme.colors.accent)
-                .frame(width: 28)
-
-            TextField("Your name", text: $name)
-                .font(.system(size: 15, weight: .medium))
                 .foregroundColor(viewModel.currentTheme.colors.textPrimary)
-                .focused($isFocused)
-                .onAppear { name = viewModel.userName }
-                .onChange(of: isFocused) { _, focused in
-                    if !focused && !name.isEmpty {
-                        viewModel.setUserName(name)
-                    }
-                }
-                .onSubmit {
-                    if !name.isEmpty {
-                        viewModel.setUserName(name)
-                    }
-                }
-        }
-    }
-}
 
-/// Schedule configuration view
-struct ScheduleSettingsView: View {
-    @EnvironmentObject var viewModel: PillBackViewModel
-    @State private var startTime: Date
-    @State private var endTime: Date
-    @State private var strategy: ScheduleStrategy
-    @State private var keyDrugInterval: Int
-    @State private var hasChanges = false
+            Spacer()
 
-    init() {
-        _startTime = State(initialValue: ScheduleConfig.default.startTime)
-        _endTime = State(initialValue: ScheduleConfig.default.endTime)
-        _strategy = State(initialValue: .equalDistribution)
-        _keyDrugInterval = State(initialValue: 150)
-    }
-
-    var body: some View {
-        VStack(spacing: 16) {
-            // Wake time
-            HStack {
-                Image(systemName: "sunrise.fill")
-                    .foregroundColor(viewModel.currentTheme.colors.accent)
-                    .frame(width: 28)
-
-                Text("Wake Time")
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundColor(viewModel.currentTheme.colors.textPrimary)
-
-                Spacer()
-
-                DatePicker("", selection: $startTime, displayedComponents: .hourAndMinute)
-                    .labelsHidden()
-                    .onChange(of: startTime) { _, _ in hasChanges = true }
-            }
-
-            Divider()
-                .background(viewModel.currentTheme.colors.border)
-
-            // Sleep time
-            HStack {
-                Image(systemName: "moon.fill")
-                    .foregroundColor(viewModel.currentTheme.colors.accent)
-                    .frame(width: 28)
-
-                Text("Sleep Time")
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundColor(viewModel.currentTheme.colors.textPrimary)
-
-                Spacer()
-
-                DatePicker("", selection: $endTime, displayedComponents: .hourAndMinute)
-                    .labelsHidden()
-                    .onChange(of: endTime) { _, _ in hasChanges = true }
-            }
-
-            Divider()
-                .background(viewModel.currentTheme.colors.border)
-
-            // Strategy picker
-            VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    Image(systemName: "clock.arrow.circlepath")
-                        .foregroundColor(viewModel.currentTheme.colors.accent)
-                        .frame(width: 28)
-
-                    Text("Schedule Strategy")
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundColor(viewModel.currentTheme.colors.textPrimary)
-                }
-
-                Picker("Strategy", selection: $strategy) {
-                    ForEach(ScheduleStrategy.allCases, id: \.self) { strat in
-                        Text(strat.rawValue).tag(strat)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .onChange(of: strategy) { _, _ in hasChanges = true }
-
-                Text(strategy.description)
-                    .font(.system(size: 11))
-                    .foregroundColor(viewModel.currentTheme.colors.textMuted)
-            }
-
-            // KEY DRUG interval (only for fixed interval)
-            if strategy == .fixedInterval {
-                Divider()
-                    .background(viewModel.currentTheme.colors.border)
-
-                HStack {
-                    Image(systemName: "timer")
-                        .foregroundColor(viewModel.currentTheme.colors.accent)
-                        .frame(width: 28)
-
-                    Text("KEY DRUG Interval")
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundColor(viewModel.currentTheme.colors.textPrimary)
-
-                    Spacer()
-
-                    Stepper("\(keyDrugInterval) min", value: $keyDrugInterval, in: 90...240, step: 15)
-                        .onChange(of: keyDrugInterval) { _, _ in hasChanges = true }
-                }
-            }
-
-            // Apply button
-            if hasChanges {
-                Button(action: applyChanges) {
-                    Text("Regenerate Schedule")
-                        .font(.system(size: 15, weight: .bold))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(viewModel.currentTheme.colors.accent)
-                        )
-                }
-            }
-        }
-        .onAppear {
-            startTime = viewModel.scheduleConfig.startTime
-            endTime = viewModel.scheduleConfig.endTime
-            strategy = viewModel.scheduleConfig.strategy
-            keyDrugInterval = viewModel.scheduleConfig.keyDrugInterval
-        }
-    }
-
-    private func applyChanges() {
-        let config = ScheduleConfig(
-            startTime: startTime,
-            endTime: endTime,
-            strategy: strategy,
-            keyDrugInterval: keyDrugInterval
-        )
-        viewModel.updateScheduleConfig(config)
-        hasChanges = false
-    }
-}
-
-/// Theme selection row
-struct ThemeSettingsRow: View {
-    @EnvironmentObject var viewModel: PillBackViewModel
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: "paintpalette.fill")
-                    .foregroundColor(viewModel.currentTheme.colors.accent)
-                    .frame(width: 28)
-
-                Text("Theme")
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundColor(viewModel.currentTheme.colors.textPrimary)
-
-                Spacer()
-
-                Text(viewModel.currentTheme.rawValue)
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(viewModel.currentTheme.colors.textSecondary)
-            }
-
-            HStack(spacing: 16) {
+            Menu {
                 ForEach(AppTheme.allCases, id: \.self) { theme in
                     Button(action: { viewModel.setTheme(theme) }) {
-                        VStack(spacing: 6) {
-                            Circle()
-                                .fill(
-                                    LinearGradient(
-                                        colors: theme.previewColors,
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    )
-                                )
-                                .frame(width: 36, height: 36)
-                                .overlay(
-                                    Circle()
-                                        .stroke(viewModel.currentTheme == theme ? theme.colors.accent : Color.clear, lineWidth: 3)
-                                )
-
+                        HStack {
                             Text(theme.rawValue)
-                                .font(.system(size: 10, weight: .medium))
-                                .foregroundColor(viewModel.currentTheme.colors.textSecondary)
+                            if viewModel.currentTheme == theme {
+                                Image(systemName: "checkmark")
+                            }
                         }
                     }
-                    .buttonStyle(.plain)
                 }
+            } label: {
+                HStack(spacing: 4) {
+                    Text(viewModel.currentTheme.rawValue)
+                        .font(.system(size: 14))
+                        .foregroundColor(viewModel.currentTheme.colors.textSecondary)
+
+                    Image(systemName: "chevron.up.chevron.down")
+                        .font(.system(size: 10))
+                        .foregroundColor(viewModel.currentTheme.colors.textMuted)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(
+                    RoundedRectangle(cornerRadius: 6)
+                        .fill(viewModel.currentTheme.colors.bgElevated)
+                )
             }
-            .frame(maxWidth: .infinity)
         }
     }
 }
 
-/// Reusable settings button
-struct SettingsButton: View {
+// MARK: - Toggle Row With Action
+
+private struct ToggleRowWithAction: View {
     @EnvironmentObject var viewModel: PillBackViewModel
     let icon: String
     let title: String
-    let subtitle: String?
-    let action: () -> Void
+    let isOn: Bool
+    let onChange: (Bool) -> Void
 
-    init(icon: String, title: String, subtitle: String? = nil, action: @escaping () -> Void) {
-        self.icon = icon
-        self.title = title
-        self.subtitle = subtitle
-        self.action = action
-    }
+    @State private var localIsOn: Bool = false
 
     var body: some View {
-        Button(action: action) {
-            HStack {
-                Image(systemName: icon)
-                    .font(.system(size: 16))
-                    .foregroundColor(viewModel.currentTheme.colors.accent)
-                    .frame(width: 28)
+        HStack {
+            Image(systemName: icon)
+                .font(.system(size: 16))
+                .foregroundColor(viewModel.currentTheme.colors.textMuted)
+                .frame(width: 24)
 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(title)
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundColor(viewModel.currentTheme.colors.textPrimary)
+            Text(title)
+                .font(.system(size: 16))
+                .foregroundColor(viewModel.currentTheme.colors.textPrimary)
 
-                    if let subtitle = subtitle {
-                        Text(subtitle)
-                            .font(.system(size: 11))
-                            .foregroundColor(viewModel.currentTheme.colors.textMuted)
+            Spacer()
+
+            Toggle("", isOn: $localIsOn)
+                .labelsHidden()
+                .tint(viewModel.currentTheme.colors.accent)
+                .onChange(of: localIsOn) { _, newValue in
+                    onChange(newValue)
+                }
+        }
+        .onAppear {
+            localIsOn = isOn
+        }
+    }
+}
+
+// MARK: - Sound Picker Row
+
+private struct SoundPickerRow: View {
+    @EnvironmentObject var viewModel: PillBackViewModel
+    @State private var selectedSound: ConfirmationSound = .gentle
+
+    var body: some View {
+        HStack {
+            Image(systemName: "speaker.wave.2")
+                .font(.system(size: 16))
+                .foregroundColor(viewModel.currentTheme.colors.textMuted)
+                .frame(width: 24)
+
+            Text("Confirmation Sound")
+                .font(.system(size: 16))
+                .foregroundColor(viewModel.currentTheme.colors.textPrimary)
+
+            Spacer()
+
+            Menu {
+                ForEach(ConfirmationSound.allCases, id: \.self) { sound in
+                    Button(action: {
+                        selectedSound = sound
+                        AudioFeedbackService.shared.configure(sound: sound)
+                        AudioFeedbackService.shared.playSound(sound)
+                    }) {
+                        HStack {
+                            Text(sound.rawValue)
+                            if selectedSound == sound {
+                                Image(systemName: "checkmark")
+                            }
+                        }
                     }
                 }
+            } label: {
+                HStack(spacing: 4) {
+                    Text(selectedSound.rawValue)
+                        .font(.system(size: 14))
+                        .foregroundColor(viewModel.currentTheme.colors.textSecondary)
 
-                Spacer()
-
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 14))
-                    .foregroundColor(viewModel.currentTheme.colors.textMuted)
+                    Image(systemName: "chevron.up.chevron.down")
+                        .font(.system(size: 10))
+                        .foregroundColor(viewModel.currentTheme.colors.textMuted)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(
+                    RoundedRectangle(cornerRadius: 6)
+                        .fill(viewModel.currentTheme.colors.bgElevated)
+                )
             }
-            .padding(.vertical, 8)
+        }
+        .onAppear {
+            selectedSound = AudioFeedbackService.shared.currentSound
         }
     }
 }
 
-/// About section with app info
-struct AboutView: View {
-    @EnvironmentObject var viewModel: PillBackViewModel
-
-    var body: some View {
-        VStack(spacing: 12) {
-            HStack {
-                Text("Version")
-                    .foregroundColor(viewModel.currentTheme.colors.textSecondary)
-                Spacer()
-                Text("1.0.0 (MVP)")
-                    .foregroundColor(viewModel.currentTheme.colors.textPrimary)
-            }
-            .font(.system(size: 14))
-
-            Divider()
-                .background(viewModel.currentTheme.colors.border)
-
-            HStack {
-                Text("Developer")
-                    .foregroundColor(viewModel.currentTheme.colors.textSecondary)
-                Spacer()
-                Text("PillBack Team")
-                    .foregroundColor(viewModel.currentTheme.colors.textPrimary)
-            }
-            .font(.system(size: 14))
-
-            Divider()
-                .background(viewModel.currentTheme.colors.border)
-
-            Text("PillBack helps Parkinson's patients track medication timing accuracy for optimal symptom management.")
-                .font(.system(size: 12))
-                .foregroundColor(viewModel.currentTheme.colors.textMuted)
-                .multilineTextAlignment(.center)
-        }
-    }
-}
+// MARK: - Preview
 
 #Preview {
     SettingsView()
         .environmentObject(PillBackViewModel())
+        .environment(\.metrics, ResponsiveMetrics())
 }

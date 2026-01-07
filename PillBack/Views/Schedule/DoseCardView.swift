@@ -27,6 +27,7 @@ struct DoseCardView: View {
         VStack(spacing: 0) {
             // Main card content
             Button(action: {
+                HapticManager.lightImpact()
                 withAnimation(.easeInOut(duration: 0.2)) {
                     isExpanded.toggle()
                 }
@@ -72,7 +73,10 @@ struct DoseCardView: View {
                             .foregroundColor(Color(hex: "#eab308"))
                     } else {
                         // Take button
-                        Button(action: onTake) {
+                        Button(action: {
+                            HapticManager.doseTaken()
+                            onTake()
+                        }) {
                             Text("Take")
                                 .font(.system(size: 14, weight: .bold))
                                 .foregroundColor(.white)

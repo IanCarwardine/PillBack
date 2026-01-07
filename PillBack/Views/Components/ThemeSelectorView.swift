@@ -35,6 +35,9 @@ struct ThemeButton: View {
 
     var body: some View {
         Button(action: {
+            if !isSelected {
+                HapticManager.themeChanged()
+            }
             withAnimation(.easeInOut(duration: 0.2)) {
                 viewModel.setTheme(theme)
             }

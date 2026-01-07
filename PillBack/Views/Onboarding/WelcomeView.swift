@@ -1,115 +1,116 @@
 // WelcomeView.swift
-// First onboarding screen with app introduction
+// First onboarding screen with app introduction - v0.4 Design
 
 import SwiftUI
 
 /// Welcome screen introducing the app
 struct WelcomeView: View {
     @EnvironmentObject var viewModel: PillBackViewModel
+    @Environment(\.metrics) var metrics
     let onContinue: () -> Void
 
     var body: some View {
-        VStack(spacing: 40) {
+        VStack(spacing: 0) {
             Spacer()
 
-            // Logo and title
-            VStack(spacing: 16) {
-                // App icon placeholder
-                ZStack {
-                    RoundedRectangle(cornerRadius: 24)
-                        .fill(viewModel.currentTheme.colors.accent.opacity(0.2))
-                        .frame(width: 100, height: 100)
+            // Logo - same layout as KeyMedicationView icon
+            Image("PillBackLogo")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 100, height: 100)
 
-                    Image(systemName: "pill.fill")
-                        .font(.system(size: 48))
-                        .foregroundColor(viewModel.currentTheme.colors.accent)
-                }
+            Spacer()
+                .frame(height: 32)
 
-                VStack(spacing: 8) {
-                    HStack(spacing: 0) {
-                        Text("PillBack")
-                            .font(.system(size: 36, weight: .black))
-                            .foregroundColor(viewModel.currentTheme.colors.accent)
-                        Text("\u{2122}")
-                            .font(.system(size: 20, weight: .bold))
-                            .foregroundColor(viewModel.currentTheme.colors.accent)
-                    }
+            // Title
+            HStack(spacing: 0) {
+                Text("Welcome to ")
+                    .font(.system(size: metrics.titleSize, weight: .bold))
+                    .foregroundColor(viewModel.currentTheme.colors.textPrimary)
 
-                    Text("Medication Timing Tracker")
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundColor(viewModel.currentTheme.colors.textSecondary)
-                }
+                Text("PillBack")
+                    .font(.system(size: metrics.titleSize, weight: .bold))
+                    .foregroundColor(viewModel.currentTheme.colors.textPrimary)
+
+                Text("™")
+                    .font(.system(size: metrics.titleSize * 0.5, weight: .bold))
+                    .foregroundColor(viewModel.currentTheme.colors.textPrimary)
+                    .baselineOffset(metrics.titleSize * 0.3)
             }
+            .padding(.bottom, 12)
+
+            // Subtitle
+            Text("Passive, phone-based medication\nadherence tracking.")
+                .font(.system(size: metrics.bodySize))
+                .multilineTextAlignment(.center)
+                .foregroundColor(viewModel.currentTheme.colors.textSecondary)
+                .padding(.bottom, 48)
 
             // Features
-            VStack(spacing: 20) {
-                FeatureRow(
-                    icon: "clock.fill",
-                    title: "Track Timing",
-                    description: "Record when you take each dose from your 6-port organizer"
-                )
-
-                FeatureRow(
-                    icon: "chart.bar.fill",
-                    title: "See Patterns",
-                    description: "Understand your timing accuracy and identify areas to improve"
-                )
-
+            VStack(alignment: .leading, spacing: 20) {
                 FeatureRow(
                     icon: "bell.fill",
-                    title: "Stay on Track",
-                    description: "Get reminders to help maintain consistent medication timing"
+                    text: "Smart reminders at the right time"
+                )
+
+                FeatureRow(
+                    icon: "chart.line.uptrend.xyaxis",
+                    text: "Track your adherence patterns"
+                )
+
+                FeatureRow(
+                    icon: "iphone.radiowaves.left.and.right",
+                    text: "No extra devices needed"
                 )
             }
-            .padding(.horizontal, 24)
+            .padding(.horizontal, 48)
 
+            Spacer()
             Spacer()
 
             // Get Started button
-            Button(action: onContinue) {
+            Button(action: {
+                HapticManager.impact(.medium)
+                onContinue()
+            }) {
                 Text("Get Started")
-                    .font(.system(size: 18, weight: .bold))
-                    .foregroundColor(.white)
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(.black)
                     .frame(maxWidth: .infinity)
-                    .padding()
+                    .padding(.vertical, 18)
                     .background(
-                        RoundedRectangle(cornerRadius: 14)
+                        RoundedRectangle(cornerRadius: 16)
                             .fill(viewModel.currentTheme.colors.accent)
                     )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(viewModel.currentTheme.colors.accent.opacity(0.5), lineWidth: 2)
+                            .padding(-2)
+                    )
             }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 20)
+            .padding(.horizontal, metrics.horizontalPadding + 8)
+            .padding(.bottom, 50)
         }
     }
 }
 
-/// Feature row for welcome screen
-struct FeatureRow: View {
+/// Feature row for welcome screen - v0.4 minimal style
+private struct FeatureRow: View {
     @EnvironmentObject var viewModel: PillBackViewModel
+
     let icon: String
-    let title: String
-    let description: String
+    let text: String
 
     var body: some View {
         HStack(spacing: 16) {
             Image(systemName: icon)
-                .font(.system(size: 24))
+                .font(.system(size: 20))
                 .foregroundColor(viewModel.currentTheme.colors.accent)
-                .frame(width: 44, height: 44)
-                .background(
-                    Circle()
-                        .fill(viewModel.currentTheme.colors.bgCard)
-                )
+                .frame(width: 28)
 
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(viewModel.currentTheme.colors.textPrimary)
-
-                Text(description)
-                    .font(.system(size: 14))
-                    .foregroundColor(viewModel.currentTheme.colors.textSecondary)
-            }
+            Text(text)
+                .font(.system(size: 16))
+                .foregroundColor(viewModel.currentTheme.colors.textSecondary)
 
             Spacer()
         }
@@ -117,6 +118,10 @@ struct FeatureRow: View {
 }
 
 #Preview {
-    WelcomeView(onContinue: {})
-        .environmentObject(PillBackViewModel())
+    ZStack {
+        Color.black.ignoresSafeArea()
+        WelcomeView(onContinue: {})
+    }
+    .environmentObject(PillBackViewModel())
+    .environment(\.metrics, ResponsiveMetrics())
 }

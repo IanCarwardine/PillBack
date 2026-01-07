@@ -9,67 +9,40 @@ struct ContentView: View {
     @State private var selectedTab = 0
 
     var body: some View {
-        ZStack {
-            // Background
-            viewModel.currentTheme.colors.bgPrimary
-                .ignoresSafeArea()
+        GeometryReader { geometry in
+            ZStack {
+                // Background
+                viewModel.currentTheme.colors.bgPrimary
+                    .ignoresSafeArea()
 
-            if viewModel.viewMode == .timelineOnly {
-                // Timeline Only Mode
-                TimelineOnlyView()
-            } else {
-                // Full View Mode
-                HStack(spacing: 0) {
-                    // Timeline Sidebar
-                    TimelineSidebarView()
-                        .frame(width: viewModel.timelineExpanded ? 169 : 78)
-
-                    // Main Content
+                if viewModel.viewMode == .timelineOnly {
+                    // Timeline Only Mode (legacy - shows Ports view)
+                    PortsView()
+                } else {
+                    // Full View Mode
                     VStack(spacing: 0) {
-                        // Header
-                        HeaderView(selectedTab: $selectedTab)
-
                         // Tab Content
                         TabView(selection: $selectedTab) {
-                            ScheduleView()
+                            HomeView()
                                 .tag(0)
 
-                            MedicationsView()
+                            PortsView()
                                 .tag(1)
 
-                            AdherenceView()
+                            HistoryView()
                                 .tag(2)
 
                             SettingsView()
                                 .tag(3)
                         }
                         .tabViewStyle(.page(indexDisplayMode: .never))
+
+                        // Bottom Tab Bar
+                        BottomTabBar(selectedTab: $selectedTab)
                     }
-                    .frame(maxWidth: .infinity)
                 }
             }
-
-            // Theme Selector (Top Right)
-            VStack {
-                HStack {
-                    Spacer()
-                    ThemeSelectorView()
-                        .padding(.trailing, 16)
-                        .padding(.top, 8)
-                }
-                Spacer()
-            }
-
-            // View Mode Toggle (Below Theme Selector)
-            VStack {
-                HStack {
-                    Spacer()
-                    ViewModeToggleButton()
-                        .padding(.trailing, 16)
-                        .padding(.top, 50)
-                }
-                Spacer()
-            }
+            .environment(\.metrics, ResponsiveMetrics(geometry: geometry))
         }
     }
 }

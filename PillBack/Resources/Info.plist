@@ -24,6 +24,8 @@
 	<true/>
 	<key>NSUserNotificationUsageDescription</key>
 	<string>PillBack needs notifications to remind you when it's time to take your medication.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>PillBack uses your camera to scan medication labels and automatically add them to your schedule.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

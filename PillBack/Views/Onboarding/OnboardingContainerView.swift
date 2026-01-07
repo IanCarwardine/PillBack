@@ -3,52 +3,100 @@
 
 import SwiftUI
 
+/// Onboarding step enum for type-safe navigation
+enum OnboardingStep: Int, CaseIterable {
+    case welcome = 0
+    case name = 1
+    case notifications = 2
+    case wakingHours = 3
+    case keyMedication = 4
+    case companionMedications = 5
+    case scheduleSetup = 6
+
+    var title: String {
+        switch self {
+        case .welcome: return "Welcome"
+        case .name: return "Your Name"
+        case .notifications: return "Notifications"
+        case .wakingHours: return "Waking Hours"
+        case .keyMedication: return "Key Medication"
+        case .companionMedications: return "Companion Meds"
+        case .scheduleSetup: return "Schedule"
+        }
+    }
+
+    static var totalSteps: Int { allCases.count }
+}
+
 /// Container view managing the onboarding flow
 struct OnboardingContainerView: View {
     @EnvironmentObject var viewModel: PillBackViewModel
     @Binding var hasCompletedOnboarding: Bool
 
-    @State private var currentPage = 0
+    @State private var currentStep: OnboardingStep = .welcome
+
+    private var currentPage: Int {
+        currentStep.rawValue
+    }
 
     var body: some View {
         ZStack {
             viewModel.currentTheme.colors.bgPrimary
                 .ignoresSafeArea()
 
-            VStack {
-                // Page content
-                TabView(selection: $currentPage) {
-                    WelcomeView(onContinue: nextPage)
-                        .tag(0)
+            // Step content
+            Group {
+                switch currentStep {
+                case .welcome:
+                    WelcomeView(onContinue: { goToStep(.name) })
 
-                    NameEntryView(onContinue: nextPage)
-                        .tag(1)
+                case .name:
+                    NameEntryView(
+                        onContinue: { goToStep(.notifications) },
+                        onBack: { goToStep(.welcome) }
+                    )
 
-                    NotificationPermissionView(onContinue: nextPage)
-                        .tag(2)
+                case .notifications:
+                    NotificationPermissionView(
+                        onContinue: { goToStep(.wakingHours) },
+                        onBack: { goToStep(.name) }
+                    )
 
-                    ScheduleSetupView(onComplete: completeOnboarding)
-                        .tag(3)
+                case .wakingHours:
+                    WakingHoursView(
+                        onContinue: { goToStep(.keyMedication) },
+                        onBack: { goToStep(.notifications) }
+                    )
+
+                case .keyMedication:
+                    KeyMedicationView(
+                        onContinue: { goToStep(.companionMedications) },
+                        onBack: { goToStep(.wakingHours) }
+                    )
+
+                case .companionMedications:
+                    CompanionMedicationsView(
+                        onContinue: { goToStep(.scheduleSetup) },
+                        onBack: { goToStep(.keyMedication) }
+                    )
+
+                case .scheduleSetup:
+                    ScheduleSetupView(
+                        onComplete: completeOnboarding,
+                        onBack: { goToStep(.companionMedications) }
+                    )
                 }
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                .animation(.easeInOut, value: currentPage)
-
-                // Page indicators
-                HStack(spacing: 8) {
-                    ForEach(0..<4) { index in
-                        Circle()
-                            .fill(index == currentPage ? viewModel.currentTheme.colors.accent : viewModel.currentTheme.colors.bgElevated)
-                            .frame(width: 8, height: 8)
-                    }
-                }
-                .padding(.bottom, 20)
             }
+            .transition(.asymmetric(
+                insertion: .move(edge: .trailing).combined(with: .opacity),
+                removal: .move(edge: .leading).combined(with: .opacity)
+            ))
         }
     }
 
-    private func nextPage() {
-        withAnimation {
-            currentPage += 1
+    private func goToStep(_ step: OnboardingStep) {
+        withAnimation(.easeInOut(duration: 0.3)) {
+            currentStep = step
         }
     }
 
@@ -60,4 +108,5 @@ struct OnboardingContainerView: View {
 #Preview {
     OnboardingContainerView(hasCompletedOnboarding: .constant(false))
         .environmentObject(PillBackViewModel())
+        .environment(\.metrics, ResponsiveMetrics())
 }

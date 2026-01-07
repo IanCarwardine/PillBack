@@ -46,20 +46,21 @@ enum AppTheme: String, CaseIterable, Codable {
                 border: Color(hex: "#5a4a3a")
             )
         case .contrast:
+            // v0.4 Design: Pure black with mint green accent
             return ThemeColors(
                 bgPrimary: .black,
                 bgSecondary: Color(hex: "#0a0a0a"),
-                bgCard: Color(hex: "#111111"),
-                bgElevated: Color(hex: "#1a1a1a"),
+                bgCard: Color(hex: "#1c1c1e"),
+                bgElevated: Color(hex: "#2c2c2e"),
                 textPrimary: .white,
-                textSecondary: Color(hex: "#cccccc"),
-                textMuted: Color(hex: "#888888"),
-                accent: Color(hex: "#00dddd"),
-                accentDark: Color(hex: "#00aaaa"),
-                success: Color(hex: "#00ff88"),
-                warning: Color(hex: "#ffdd00"),
-                danger: Color(hex: "#88aaff"),
-                border: Color(hex: "#00aaaa")
+                textSecondary: Color(hex: "#ababab"),
+                textMuted: Color(hex: "#6b6b6b"),
+                accent: Color(hex: "#4ade80"),      // Mint green
+                accentDark: Color(hex: "#22c55e"),  // Darker green
+                success: Color(hex: "#4ade80"),     // Mint green
+                warning: Color(hex: "#eab308"),     // Yellow/gold for pending
+                danger: Color(hex: "#f87171"),      // Soft red
+                border: Color(hex: "#3f3f46")       // Zinc border
             )
         case .daylight:
             return ThemeColors(

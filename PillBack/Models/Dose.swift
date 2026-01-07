@@ -11,17 +11,33 @@ struct Dose: Identifiable, Codable, Equatable {
     var scheduledTime: Date
     var actualTime: Date?
     var medications: [Medication]
+    var keyMedicationId: Int?  // ID of the key medication for this port
     var status: DoseStatus
 
     // MARK: - Initialization
 
-    init(id: UUID = UUID(), portNumber: Int, scheduledTime: Date, actualTime: Date? = nil, medications: [Medication] = [], status: DoseStatus = .pending) {
+    init(id: UUID = UUID(), portNumber: Int, scheduledTime: Date, actualTime: Date? = nil, medications: [Medication] = [], keyMedicationId: Int? = nil, status: DoseStatus = .pending) {
         self.id = id
         self.portNumber = portNumber
         self.scheduledTime = scheduledTime
         self.actualTime = actualTime
         self.medications = medications
+        self.keyMedicationId = keyMedicationId
         self.status = status
+    }
+
+    // MARK: - Medication Helpers
+
+    /// The key medication for this port (if set)
+    var keyMedication: Medication? {
+        guard let keyId = keyMedicationId else { return nil }
+        return medications.first { $0.id == keyId }
+    }
+
+    /// Companion medications (all medications except the key drug)
+    var companionMedications: [Medication] {
+        guard let keyId = keyMedicationId else { return medications }
+        return medications.filter { $0.id != keyId }
     }
 
     // MARK: - Formatted Time Strings

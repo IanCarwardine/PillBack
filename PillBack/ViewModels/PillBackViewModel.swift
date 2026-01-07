@@ -18,6 +18,9 @@ class PillBackViewModel: ObservableObject {
     @Published var viewMode: ViewMode = .full
     @Published var userName: String = "My Name"
     @Published var timelineExpanded: Bool = false
+    @Published var easyModeEnabled: Bool = false
+    @Published var use24HourFormat: Bool = true
+    @Published var hapticFeedbackEnabled: Bool = true
 
     // MARK: - Computed Properties
 
@@ -60,6 +63,9 @@ class PillBackViewModel: ObservableObject {
     private let viewModeKey = "pillback_viewMode"
     private let userNameKey = "pillback_userName"
     private let timelineExpandedKey = "pillback_timelineExpanded"
+    private let easyModeKey = "pillback_easyMode"
+    private let use24HourFormatKey = "pillback_use24HourFormat"
+    private let hapticFeedbackKey = "pillback_hapticFeedback"
     private let lastResetKey = "pillback_lastReset"
 
     // MARK: - Initialization
@@ -175,6 +181,16 @@ class PillBackViewModel: ObservableObject {
         }
     }
 
+    /// Update port settings (time, key medication, and medications)
+    func updatePortSettings(dose: Dose, scheduledTime: Date, keyMedicationId: Int?, medications: [Medication]) {
+        if let index = doses.firstIndex(where: { $0.id == dose.id }) {
+            doses[index].scheduledTime = scheduledTime
+            doses[index].keyMedicationId = keyMedicationId
+            doses[index].medications = medications
+            saveDoses()
+        }
+    }
+
     // MARK: - Medication Management
 
     /// Add a new medication
@@ -203,6 +219,21 @@ class PillBackViewModel: ObservableObject {
     /// Get all medications assigned to a specific port
     func medicationsForPort(_ portNumber: Int) -> [Medication] {
         medications.filter { $0.isInPort(portNumber) }
+    }
+
+    /// Public method to save medications (for onboarding)
+    func saveMedicationsPublic() {
+        saveMedications()
+    }
+
+    /// Public method to save doses (for onboarding)
+    func saveDosesPublic() {
+        saveDoses()
+    }
+
+    /// Public method to save schedule config (for onboarding)
+    func saveScheduleConfigPublic() {
+        saveScheduleConfig()
     }
 
     /// Regenerate schedule to include updated medications
@@ -313,6 +344,47 @@ class PillBackViewModel: ObservableObject {
 
         // Timeline Expanded
         timelineExpanded = defaults.bool(forKey: timelineExpandedKey)
+
+        // Easy Mode
+        easyModeEnabled = defaults.bool(forKey: easyModeKey)
+
+        // 24-hour format (default true if not set)
+        use24HourFormat = defaults.object(forKey: use24HourFormatKey) == nil
+            ? true
+            : defaults.bool(forKey: use24HourFormatKey)
+
+        // Haptic feedback (default true if not set)
+        hapticFeedbackEnabled = defaults.object(forKey: hapticFeedbackKey) == nil
+            ? true
+            : defaults.bool(forKey: hapticFeedbackKey)
+    }
+
+    // MARK: - Easy Mode
+
+    /// Toggle Easy Mode for accessibility
+    func toggleEasyMode() {
+        easyModeEnabled.toggle()
+        defaults.set(easyModeEnabled, forKey: easyModeKey)
+    }
+
+    /// Set Easy Mode state directly
+    func setEasyMode(_ enabled: Bool) {
+        easyModeEnabled = enabled
+        defaults.set(enabled, forKey: easyModeKey)
+    }
+
+    // MARK: - Display Settings
+
+    /// Set 24-hour format preference
+    func set24HourFormat(_ enabled: Bool) {
+        use24HourFormat = enabled
+        defaults.set(enabled, forKey: use24HourFormatKey)
+    }
+
+    /// Set haptic feedback preference
+    func setHapticFeedback(_ enabled: Bool) {
+        hapticFeedbackEnabled = enabled
+        defaults.set(enabled, forKey: hapticFeedbackKey)
     }
 
     // MARK: - Midnight Reset
@@ -353,10 +425,12 @@ class PillBackViewModel: ObservableObject {
 
     // MARK: - Data Reset
 
+    private let onboardingKey = "hasCompletedOnboarding"
+
     /// Reset all data to defaults (for testing or user request)
     func resetAllData() {
-        // Clear UserDefaults
-        let keys = [dosesKey, medicationsKey, configKey, themeKey, viewModeKey, userNameKey, timelineExpandedKey, lastResetKey]
+        // Clear UserDefaults (including onboarding state)
+        let keys = [dosesKey, medicationsKey, configKey, themeKey, viewModeKey, userNameKey, timelineExpandedKey, easyModeKey, lastResetKey, onboardingKey]
         keys.forEach { defaults.removeObject(forKey: $0) }
 
         // Reset to defaults
@@ -365,9 +439,11 @@ class PillBackViewModel: ObservableObject {
         viewMode = .full
         userName = "My Name"
         timelineExpanded = false
-        medications = Medication.defaults
+        easyModeEnabled = false
+        medications = []  // Clear all medications (key and companion)
+        doses = []        // Clear port schedule
         saveMedications()
-        generateSchedule()
+        saveDoses()
     }
 
     // MARK: - Export (Stub for Issue #011)
